@@ -1,5 +1,6 @@
 package com.shareduck.shareduck.domain.user.entity;
 
+import com.shareduck.shareduck.domain.user.entity.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,4 +17,5 @@ public class UserEntity {
     private Long id;
     private String email;
     private String password;
+    private UserRole role;
 }
