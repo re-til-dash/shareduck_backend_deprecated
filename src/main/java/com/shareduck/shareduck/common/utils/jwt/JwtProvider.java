@@ -1,4 +1,4 @@
-package com.shareduck.shareduck.jwt;
+package com.shareduck.shareduck.common.utils.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

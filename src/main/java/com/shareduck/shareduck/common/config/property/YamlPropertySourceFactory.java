@@ -1,4 +1,4 @@
-package com.shareduck.shareduck.domain.user.entity.common.config.property;
+package com.shareduck.shareduck.common.config.property;
 
 import java.util.Objects;
 import java.util.Properties;

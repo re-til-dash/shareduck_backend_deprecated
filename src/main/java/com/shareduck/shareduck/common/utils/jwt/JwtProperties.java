@@ -1,6 +1,6 @@
-package com.shareduck.shareduck.jwt;
+package com.shareduck.shareduck.common.utils.jwt;
 
-import com.shareduck.shareduck.domain.user.entity.common.config.property.YamlPropertySourceFactory;
+import com.shareduck.shareduck.common.config.property.YamlPropertySourceFactory;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
