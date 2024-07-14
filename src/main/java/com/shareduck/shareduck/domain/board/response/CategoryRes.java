@@ -9,11 +9,11 @@ import lombok.Getter;
 @Getter
 public class CategoryRes {
 
-	private Long id;
+	private final Long id;
 
-	private String name;
+	private final String name;
 
-	private Map<String, Object> properties;
+	private final Map<String, Object> properties;
 
 	private CategoryRes(Long id, String name, Map<String, Object> properties) {
 		this.id = id;
