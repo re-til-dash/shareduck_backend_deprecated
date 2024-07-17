@@ -1,15 +1,19 @@
 package com.shareduck.shareduck.domain.board.request;
 
+import static lombok.AccessLevel.*;
+
 import java.util.Map;
 
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder(builderMethodName = "TestBuilder")
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor
 public class CategoryReq {
 
 	@NotBlank
@@ -17,5 +21,12 @@ public class CategoryReq {
 	private String name;
 
 	private Map<String, Object> properties;
+
+	public static CategoryReq testConstructor(String name, Map<String, Object> properties) {
+		CategoryReq categoryReq = new CategoryReq();
+		categoryReq.name = name;
+		categoryReq.properties = properties;
+		return categoryReq;
+	}
 
 }

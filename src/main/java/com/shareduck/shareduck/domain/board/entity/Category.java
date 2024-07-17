@@ -2,6 +2,7 @@ package com.shareduck.shareduck.domain.board.entity;
 
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
+import static lombok.AccessLevel.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,14 +19,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = PROTECTED)
 public class Category {
 
 	@Id
@@ -52,11 +52,11 @@ public class Category {
 		return category;
 	}
 
-	public void changeName(@NonNull String name) {
+	public void updateName(@NonNull String name) {
 		setName(name);
 	}
 
-	public void changeProperties(@NonNull Map<String, Object> properties) {
+	public void updateProperties(@NonNull Map<String, Object> properties) {
 		this.properties = properties;
 	}
 

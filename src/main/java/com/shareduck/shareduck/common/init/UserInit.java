@@ -1,32 +1,37 @@
 package com.shareduck.shareduck.common.init;
 
+import java.util.Optional;
+
+import org.springframework.stereotype.Component;
+
 import com.shareduck.shareduck.domain.user.entity.UserEntity;
 import com.shareduck.shareduck.domain.user.entity.enums.UserRole;
 import com.shareduck.shareduck.domain.user.repository.UserRepository;
+
 import jakarta.annotation.PostConstruct;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class UserInit {
-    private final UserRepository repository;
-    private static final String MAIL = "test001@gmail.com";
-    @PostConstruct
-    public void initUser() {
-        Optional<UserEntity> findUser = repository.findById(1L);
+	private final UserRepository repository;
+	private static final String MAIL = "test001@gmail.com";
 
-        UserEntity userEntity = findUser.orElse(createEntity());
-        repository.save(userEntity);
-    }
+	@PostConstruct
+	public void initUser() {
+		Optional<UserEntity> findUser = repository.findById(1L);
 
-    private UserEntity createEntity(){
+		UserEntity userEntity = findUser.orElse(createEntity());
+		repository.save(userEntity);
+	}
 
-        return UserEntity.builder()
-            .email(MAIL)
-            .role(UserRole.USER)
-            .password("{noop}test001@@")
-            .build();
-    }
+	private UserEntity createEntity() {
+
+		return UserEntity.builder()
+			.email(MAIL)
+			.role(UserRole.USER)
+			.password("{noop}test001@@")
+			.build();
+	}
+
 }
