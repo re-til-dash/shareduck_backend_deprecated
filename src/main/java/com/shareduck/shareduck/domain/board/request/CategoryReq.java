@@ -7,13 +7,11 @@ import java.util.Map;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor
 public class CategoryReq {
 
 	@NotBlank
