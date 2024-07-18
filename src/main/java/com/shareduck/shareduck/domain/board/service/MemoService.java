@@ -9,7 +9,6 @@ import com.shareduck.shareduck.common.exception.BusinessLogicException;
 import com.shareduck.shareduck.common.security.exception.AuthExceptionCode;
 import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.entity.Memo;
-import com.shareduck.shareduck.domain.board.repository.CategoryRepository;
 import com.shareduck.shareduck.domain.board.repository.MemoRepository;
 import com.shareduck.shareduck.domain.board.request.MemoReq;
 import com.shareduck.shareduck.domain.board.request.UpdateMemoReq;
@@ -30,7 +29,7 @@ public class MemoService {
 
 	private final UserRepository userRepository;
 
-	private final CategoryRepository categoryRepository;
+	private final CategoryService categoryService;
 
 	/**
 	 * 새로운 메모 생성
@@ -44,8 +43,8 @@ public class MemoService {
 		UserEntity user = userRepository.findById(userId)
 			.orElseThrow(() -> new BusinessLogicException(AuthExceptionCode.USER_NOT_FOUND));
 
-		Category category = categoryRepository.findById(memoReq.getCategoryId())
-			.orElseThrow(RuntimeException::new);
+		Category category = categoryService.findById(memoReq.getCategoryId());
+		categoryService.checkAccess(category, userId);
 
 		Memo newMemo = Memo.from(user, category, memoReq.getContent());
 		memoRepository.save(newMemo);
@@ -76,7 +75,7 @@ public class MemoService {
 	 * @param updateMemoReq {@link UpdateMemoReq}
 	 */
 	@Transactional(readOnly = false)
-	public MemoRes changeMemo(long userId, Long memoId, UpdateMemoReq updateMemoReq) {
+	public MemoRes updateMemo(long userId, Long memoId, UpdateMemoReq updateMemoReq) {
 		Memo memo = memoRepository.findById(memoId)
 			.orElseThrow(RuntimeException::new);
 		if (!canAccess(userId, memo)) {

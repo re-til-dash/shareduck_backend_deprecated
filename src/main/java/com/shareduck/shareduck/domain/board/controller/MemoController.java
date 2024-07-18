@@ -41,7 +41,7 @@ public class MemoController {
 	@PatchMapping("/{memoId}")
 	public ResponseEntity<?> updateMemo(CurrentUser currentUser, @PathVariable long memoId,
 		@RequestBody @Valid UpdateMemoReq updateMemoReq) {
-		MemoRes memoRes = memoService.changeMemo(currentUser.getUserId(), memoId, updateMemoReq);
+		MemoRes memoRes = memoService.updateMemo(currentUser.getUserId(), memoId, updateMemoReq);
 		return ResponseEntity.ok(memoRes);
 	}
 

@@ -10,8 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.testcontainers.utility.TestcontainersConfiguration;
 
 import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.repository.CategoryRepository;
@@ -21,7 +19,6 @@ import com.shareduck.shareduck.domain.user.entity.UserEntity;
 import com.shareduck.shareduck.domain.user.repository.UserRepository;
 
 @SpringBootTest
-@Import(TestcontainersConfiguration.class)
 class CategoryServiceTest {
 
 	@Autowired
