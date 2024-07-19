@@ -29,20 +29,21 @@ public class CategoryController {
 	private final CategoryService categoryService;
 
 	@GetMapping("")
-	public ResponseEntity<?> listCategories(CurrentUser currentUser) {
+	public ResponseEntity<List<CategoryRes>> listCategories(CurrentUser currentUser) {
 		List<CategoryRes> categories = categoryService.listUserCategories(currentUser.getUserId());
 
 		return ResponseEntity.ok(categories); //TODO
 	}
 
 	@PostMapping("")
-	public ResponseEntity<?> createCategory(CurrentUser currentUser, @RequestBody @Valid CategoryReq categoryReq) {
+	public ResponseEntity<CategoryRes> createCategory(CurrentUser currentUser,
+		@RequestBody @Valid CategoryReq categoryReq) {
 		CategoryRes categoryRes = categoryService.createCategory(currentUser.getUserId(), categoryReq);
 		return ResponseEntity.ok(categoryRes); //TODO
 	}
 
 	@PatchMapping("/{categoryId}")
-	public ResponseEntity<?> updateCategory(CurrentUser currentUser, @PathVariable long categoryId,
+	public ResponseEntity<CategoryRes> updateCategory(CurrentUser currentUser, @PathVariable long categoryId,
 		@RequestBody CategoryReq categoryReq) {
 		CategoryRes categoryRes = categoryService.updateCategory(currentUser.getUserId(), categoryId, categoryReq);
 		return ResponseEntity.ok(categoryRes); //TODO

@@ -43,9 +43,6 @@ class MemoControllerTest {
 	@Autowired
 	private MemoRepository memoRepository;
 
-	@Autowired
-	private MemoController memoController;
-
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@BeforeEach
