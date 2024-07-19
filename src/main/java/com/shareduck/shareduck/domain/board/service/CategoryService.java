@@ -3,6 +3,7 @@ package com.shareduck.shareduck.domain.board.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.repository.CategoryRepository;
@@ -17,11 +18,38 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CategoryService {
 
 	private final CategoryRepository categoryRepository;
 
 	private final UserRepository userRepository;
+
+	/**
+	 * 외부에서 사용할 메서드
+	 *
+	 * @param id
+	 * @return Category
+	 */
+	public Category findById(Long id) {
+		return categoryRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("해당 카테고리가 존재하지 않습니다")); //TODO
+	}
+
+	/**
+	 * 외부에서 사용할 메서드
+	 *
+	 * @param category
+	 * @param userId
+	 * @return
+	 */
+	public void checkAccess(Category category, Long userId) {
+		if (category.getUser().getId().equals(userId)) {
+			return;
+		}
+		log.error("유저{}가 카테고리{}에 접근하려고 함", userId, category);
+		throw new RuntimeException("접근권한이 없습니다");
+	}
 
 	/**
 	 * 사용자의 새 카테고리 생성
@@ -30,6 +58,7 @@ public class CategoryService {
 	 * @param categoryReq {@link CategoryReq}
 	 * @return CategoryRes    {@link CategoryRes}
 	 */
+	@Transactional(readOnly = false)
 	public CategoryRes createCategory(Long userId, CategoryReq categoryReq) {
 		UserEntity userEntity = userRepository.findById(userId)
 			.orElseThrow(RuntimeException::new);
@@ -51,18 +80,15 @@ public class CategoryService {
 			.toList();
 	}
 
+	@Transactional(readOnly = false)
 	public CategoryRes updateCategory(Long userId, Long categoryId, CategoryReq categoryReq) {
 		Category category = categoryRepository.findById(categoryId)
 			.orElseThrow(RuntimeException::new);
-		if (!canAccess(category, userId)) {
-			throw new RuntimeException();//TODO
-		}
-		category.changeName(categoryReq.getName());
-		category.changeProperties(categoryReq.getProperties());
+		checkAccess(category, userId);
+
+		category.updateName(categoryReq.getName());
+		category.updateProperties(categoryReq.getProperties());
 		return CategoryRes.from(category);
 	}
 
-	private boolean canAccess(Category category, Long userId) {
-		return category.getUser().getId().equals(userId);
-	}
 }

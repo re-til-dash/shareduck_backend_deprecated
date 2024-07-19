@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.repository.CategoryRepository;
 import com.shareduck.shareduck.domain.board.request.CategoryReq;
 import com.shareduck.shareduck.domain.board.response.CategoryRes;
@@ -42,12 +43,13 @@ class CategoryServiceTest {
 	@Test
 	@DisplayName("카테고리 생성")
 	void test1() {
+		List<Category> all = categoryRepository.findAll();
+		System.out.println(all);
 		UserEntity testUser = getTestUser();
 		String categoryName = "새로운캬테고리";
-		CategoryReq categoryReq = CategoryReq.TestBuilder()
-			.name(categoryName)
-			.properties(Map.of("key", "value", "key2", "value2"))
-			.build();
+		Map<String, Object> properties = Map.of("key", "value", "key2", "value2");
+		CategoryReq categoryReq = CategoryReq.testConstructor(categoryName, properties);
+
 		CategoryRes categoryRes = categoryService.createCategory(testUser.getId(), categoryReq);
 		assertThat(categoryRes.getName()).isEqualTo(categoryName);
 		assertThat(categoryRes.getProperties())
@@ -60,17 +62,14 @@ class CategoryServiceTest {
 	void test2() {
 		UserEntity testUser = getTestUser();
 		String categoryName = "새로운캬테고리";
-		CategoryReq categoryReq = CategoryReq.TestBuilder()
-			.name(categoryName)
-			.properties(Map.of("key", "value", "key2", "value2"))
-			.build();
+		Map<String, Object> properties = Map.of("key", "value", "key2", "value2");
+		CategoryReq categoryReq = CategoryReq.testConstructor(categoryName, properties);
 		CategoryRes categoryRes = categoryService.createCategory(testUser.getId(), categoryReq);
 
 		String updatedCategoryName = "업데이트된카테고리";
-		CategoryReq updatedCategoryReq = CategoryReq.TestBuilder()
-			.name(updatedCategoryName)
-			.properties(Map.of("updateKey", 1, "updatedKey2", "updatedValue2"))
-			.build();
+		Map<String, Object> updatedProperties = Map.of("updateKey", 1, "updatedKey2", "updatedValue2");
+		CategoryReq updatedCategoryReq = CategoryReq.testConstructor(updatedCategoryName, updatedProperties);
+
 		CategoryRes updatedCategoryRes = categoryService.updateCategory(testUser.getId(), categoryRes.getId(),
 			updatedCategoryReq);
 
@@ -85,17 +84,15 @@ class CategoryServiceTest {
 	void test3() {
 		UserEntity testUser = getTestUser();
 		String categoryName = "새로운캬테고리";
-		CategoryReq categoryReq = CategoryReq.TestBuilder()
-			.name(categoryName)
-			.properties(Map.of("key", "value", "key2", "value2"))
-			.build();
+		Map<String, Object> properties = Map.of("key", "value", "key2", "value2");
+		CategoryReq categoryReq = CategoryReq.testConstructor(categoryName, properties);
+
 		CategoryRes categoryRes = categoryService.createCategory(testUser.getId(), categoryReq);
 
 		String updatedCategoryName = "업데이트된카테고리";
-		CategoryReq updatedCategoryReq = CategoryReq.TestBuilder()
-			.name(updatedCategoryName)
-			.properties(Map.of("updateKey", 1, "updatedKey2", "updatedValue2"))
-			.build();
+		Map<String, Object> updatedProperties = Map.of("updateKey", 1, "updatedKey2", "updatedValue2");
+		CategoryReq updatedCategoryReq = CategoryReq.testConstructor(categoryName, properties);
+
 		assertThatThrownBy(() -> categoryService.updateCategory(2L, categoryRes.getId(), updatedCategoryReq))
 			.isInstanceOf(RuntimeException.class);
 	}
@@ -105,10 +102,10 @@ class CategoryServiceTest {
 	void test4() {
 		UserEntity testUser = getTestUser();
 		for (int i = 0; i < 5; i++) {
-			CategoryReq categoryReq = CategoryReq.TestBuilder()
-				.name("카테고리" + i)
-				.properties(Map.of("key", "value", "key2", "value2"))
-				.build();
+			CategoryReq categoryReq = CategoryReq.testConstructor(
+				"카테고리" + i,
+				Map.of("key", "value", "key2", "value2")
+			);
 			categoryService.createCategory(testUser.getId(), categoryReq);
 		}
 		List<CategoryRes> categoryRes = categoryService.listUserCategories(testUser.getId());
