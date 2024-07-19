@@ -46,7 +46,7 @@ public class MemoService {
 		Category category = categoryService.findById(memoReq.getCategoryId());
 		categoryService.checkAccess(category, userId);
 
-		Memo newMemo = Memo.from(user, category, memoReq.getContent());
+		Memo newMemo = Memo.create(user, category, memoReq.getContent());
 		memoRepository.save(newMemo);
 		return MemoRes.from(newMemo);
 	}

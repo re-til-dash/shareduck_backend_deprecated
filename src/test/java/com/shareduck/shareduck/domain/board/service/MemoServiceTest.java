@@ -50,11 +50,16 @@ class MemoServiceTest {
 			.get();
 	}
 
+	Category getTestCategory() {
+		return categoryRepository.findById(1L)
+			.orElse(categoryRepository.save(Category.create(getTestUser(), "테스트카테고리", null)));
+	}
+
 	@Test
 	@DisplayName("메모 생성")
 	void test1() {
 		UserEntity testUser = getTestUser();
-		Category category = categoryRepository.findById(1L).get();
+		Category category = getTestCategory();
 		String content = "content!!!!!!";
 		MemoReq memoReq = MemoReq.testConstructor(category.getId(), content);
 
@@ -70,7 +75,7 @@ class MemoServiceTest {
 	@DisplayName("메모 업데이트")
 	void test2() {
 		UserEntity testUser = getTestUser();
-		Category category = categoryRepository.findById(1L).get();
+		Category category = getTestCategory();
 		MemoReq memoReq = MemoReq.testConstructor(category.getId(), "업데이트전컨텐츠");
 		MemoRes memoRes = memoService.createMemo(testUser.getId(), memoReq);
 		Long memoId = memoRes.getId();
@@ -90,9 +95,9 @@ class MemoServiceTest {
 	@Test
 	void test3() {
 		UserEntity testUser = getTestUser();
-		Category category = categoryRepository.findById(1L).get();
+		Category category = getTestCategory();
 		for (int i = 0; i < 30; i++) {
-			memoRepository.save(Memo.from(testUser, category, "컨텐츠" + i));
+			memoRepository.save(Memo.create(testUser, category, "컨텐츠" + i));
 		}
 
 		Page<MemoRes> memosByCategoryAndUser = memoService.getMemosByCategoryAndUser(
@@ -111,8 +116,8 @@ class MemoServiceTest {
 	@Test
 	void test4() {
 		UserEntity testUser = getTestUser();
-		Category category = categoryRepository.findById(1L).get();
-		Memo savedMemo = memoRepository.save(Memo.from(testUser, category, "삭제될거임"));
+		Category category = getTestCategory();
+		Memo savedMemo = memoRepository.save(Memo.create(testUser, category, "삭제될거임"));
 
 		assertThat(memoRepository.findAll().size()).isEqualTo(1);
 		assertThatThrownBy(() -> memoService.deleteMemo(-1L, savedMemo.getId()))

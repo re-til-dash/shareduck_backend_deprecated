@@ -43,7 +43,7 @@ class CategoryControllerTest {
 		categoryRepository.deleteAll();
 	}
 
-	UserEntity getUser() {
+	UserEntity getTestUser() {
 		return userRepository.findById(1L).get();
 	}
 
@@ -71,7 +71,7 @@ class CategoryControllerTest {
 	@Test
 	@DisplayName("카테고리 조회")
 	void test2() throws Exception {
-		UserEntity user = getUser();
+		UserEntity user = getTestUser();
 		for (int i = 0; i < 10; i++) {
 			categoryRepository.save(Category.create(user, "카테고리" + i, Map.of("key1" + i, "value" + i, "key2", i)));
 		}
@@ -93,7 +93,7 @@ class CategoryControllerTest {
 	@Test
 	@DisplayName("카테고리 수정")
 	void test4() throws Exception {
-		UserEntity testUser = getUser();
+		UserEntity testUser = getTestUser();
 		String beforeCategoryName = "변경전카테고리";
 		Map<String, Object> beforeProperties = Map.of("Key", "val");
 		Category savedCategory = categoryRepository.save(

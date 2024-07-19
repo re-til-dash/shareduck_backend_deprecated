@@ -57,7 +57,7 @@ public class Memo {
 		this.content = content;
 	}
 
-	public static Memo from(@NonNull UserEntity user, @NonNull Category category, @NonNull String content) {
+	public static Memo create(@NonNull UserEntity user, @NonNull Category category, @NonNull String content) {
 		Memo memo = new Memo();
 		memo.user = user;
 		memo.category = category;
