@@ -38,6 +38,7 @@ public class MemoController {
 		return ResponseEntity.status(201).body(memoRes);
 	}
 
+	@Deprecated
 	@PatchMapping("/{memoId}")
 	public ResponseEntity<MemoRes> updateMemo(CurrentUser currentUser, @PathVariable long memoId,
 		@RequestBody @Valid UpdateMemoReq updateMemoReq) {
@@ -55,7 +56,7 @@ public class MemoController {
 	public ResponseEntity<Page<MemoRes>> listMemosWithCategory(CurrentUser currentUser,
 		@RequestParam Long categoryId,
 		@PageableDefault(size = 100) Pageable pageable) {
-		Page<MemoRes> memos = memoService.getMemosByCategoryAndUser(currentUser.getUserId(),
+		Page<MemoRes> memos = memoService.getMemoByUserIdAndCategoryId(currentUser.getUserId(),
 			categoryId, pageable);
 		return ResponseEntity.ok(memos);
 

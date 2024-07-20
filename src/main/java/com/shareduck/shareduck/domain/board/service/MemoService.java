@@ -104,9 +104,10 @@ public class MemoService {
 	 * @param pageable
 	 * @return
 	 */
-	public Page<MemoRes> getMemosByCategoryAndUser(Long userId, long categoryId, Pageable pageable) {
-		Page<Memo> Memos = memoRepository.findByUserIdAndCategoryIdOrderByIdDesc(userId,
-			categoryId, pageable);
+	public Page<MemoRes> getMemoByUserIdAndCategoryId(Long userId, long categoryId, Pageable pageable) {
+		Category category = categoryService.findById(categoryId);
+		categoryService.checkAccess(category, userId);
+		Page<Memo> Memos = memoRepository.findByCategoryIdOrderByIdDesc(categoryId, pageable);
 		return Memos.map(MemoRes::from);
 	}
 }

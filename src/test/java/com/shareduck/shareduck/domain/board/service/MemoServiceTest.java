@@ -100,7 +100,7 @@ class MemoServiceTest {
 			memoRepository.save(Memo.create(testUser, category, "컨텐츠" + i));
 		}
 
-		Page<MemoRes> memosByCategoryAndUser = memoService.getMemosByCategoryAndUser(
+		Page<MemoRes> memosByCategoryAndUser = memoService.getMemoByUserIdAndCategoryId(
 			testUser.getId(),
 			category.getId(),
 			PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"))

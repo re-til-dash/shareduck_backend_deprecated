@@ -4,13 +4,18 @@ import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
+import static org.hibernate.type.SqlTypes.*;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -31,8 +36,8 @@ import lombok.NonNull;
 @Getter
 @Entity
 @NoArgsConstructor(access = PROTECTED)
-@SQLDelete(sql = "UPDATE board SET deleted = true WHERE id = ?")
-public class Board {
+@SQLDelete(sql = "UPDATE POST SET deleted = true WHERE id = ?")
+public class Post {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -51,16 +56,25 @@ public class Board {
 	@Comment("제목")
 	private String title;
 
-	@Comment("본문")
-	@Column(columnDefinition = "TEXT")
-	private String content;
+	@Comment("json 형식의 본문")
+	@Column(name = "content", columnDefinition = "json")
+	@JdbcTypeCode(JSON)
+	private Map<String, Object> content = new HashMap<>();
+
+	@OneToMany(mappedBy = "post", cascade = PERSIST, orphanRemoval = true)
+	private final Set<Hashtag> hashtags = new HashSet<>();
+
+	@Comment("프로퍼티 (메타데이탸)")
+	@Column(name = "properties", columnDefinition = "json")
+	@JdbcTypeCode(JSON)
+	private Map<String, Object> properties = new HashMap<>();
+
+	@Comment("썸네일경로")
+	private String thumbnailPath;
 
 	@CreationTimestamp
 	@Comment("생성일자")
 	private LocalDateTime createdAt;
-
-	@OneToMany(mappedBy = "board", cascade = PERSIST, orphanRemoval = true)
-	private final Set<Hashtag> hashtags = new HashSet<>();
 
 	@UpdateTimestamp
 	@Comment("마지막수정일")
@@ -69,31 +83,36 @@ public class Board {
 	@Comment("삭제여부")
 	private boolean deleted;
 
+	@Comment("나중을 대비한 식별자 생성때만 널거임")
+	private UUID uuid;
+
 	public void addTag(@NonNull Hashtag hashtag) {
 		this.hashtags.add(hashtag);
-		// hashtag.setBoard(this);
+		hashtag.setPost(this);
 	}
 
-	public void removeTags(@NonNull Hashtag hashtag) {
+	public void removeTag(@NonNull Hashtag hashtag) {
 		this.hashtags.remove(hashtag);
-		hashtag.setBoard(null);
-	}
-
-	static Board create(@NonNull UserEntity user, @NonNull Category category, @NonNull String title,
-		@NonNull String content) {
-		return Board.builder()
-			.user(user)
-			.category(category)
-			.title(title)
-			.content(content)
-			.build();
+		hashtag.setPost(null);
 	}
 
 	@Builder
-	private Board(UserEntity user, Category category, String title, String content) {
+	private Post(UserEntity user, Category category, String title, Map<String, Object> content,
+		Map<String, Object> properties, String thumbnailPath, UUID uuid) {
 		this.user = user;
 		this.category = category;
 		this.title = title;
 		this.content = content;
+		this.properties = properties;
+		this.thumbnailPath = thumbnailPath;
+		this.uuid = uuid;
+	}
+
+	public void update(String title, Map<String, Object> content, Map<String, Object> properties,
+		String thumbnailPath) {
+		this.title = title;
+		this.content = content;
+		this.properties = properties;
+		this.thumbnailPath = thumbnailPath;
 	}
 }

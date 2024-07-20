@@ -86,7 +86,6 @@ class CategoryServiceTest {
 		String categoryName = "새로운캬테고리";
 		Map<String, Object> properties = Map.of("key", "value", "key2", "value2");
 		CategoryReq categoryReq = CategoryReq.testConstructor(categoryName, properties);
-
 		CategoryRes categoryRes = categoryService.createCategory(testUser.getId(), categoryReq);
 
 		String updatedCategoryName = "업데이트된카테고리";
