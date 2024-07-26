@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import com.shareduck.shareduck.common.request.dto.CurrentUser;
 import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.entity.Memo;
 import com.shareduck.shareduck.domain.board.repository.CategoryRepository;
@@ -63,7 +64,7 @@ class MemoServiceTest {
 		String content = "content!!!!!!";
 		MemoReq memoReq = MemoReq.testConstructor(category.getId(), content);
 
-		MemoRes memoRes = memoService.createMemo(testUser.getId(), memoReq);
+		MemoRes memoRes = memoService.createMemo(new CurrentUser(testUser.getId()), memoReq);
 
 		assertThat(memoRes.getCategoryId()).isEqualTo(category.getId());
 		assertThat(memoRes.getContent()).isEqualTo(content);
@@ -77,16 +78,18 @@ class MemoServiceTest {
 		UserEntity testUser = getTestUser();
 		Category category = getTestCategory();
 		MemoReq memoReq = MemoReq.testConstructor(category.getId(), "업데이트전컨텐츠");
-		MemoRes memoRes = memoService.createMemo(testUser.getId(), memoReq);
+		MemoRes memoRes = memoService.createMemo(new CurrentUser(testUser.getId()), memoReq);
 		Long memoId = memoRes.getId();
 		String updatedContent = "업데이트된컨텐츠임!!!!";
 		UpdateMemoReq updateMemoReq = UpdateMemoReq.testConstructor(updatedContent);
 
-		MemoRes updatedMemoRes = memoService.updateMemo(testUser.getId(), memoId, updateMemoReq);
+		CurrentUser tmpCurrentUser = new CurrentUser(testUser.getId());
+
+		MemoRes updatedMemoRes = memoService.updateMemo(tmpCurrentUser, memoId, updateMemoReq);
 		assertThat(updatedMemoRes.getContent()).isEqualTo(updatedContent);
 
 		//실패케이스
-		assertThatThrownBy(() -> memoService.updateMemo(-1L, memoId, updateMemoReq))
+		assertThatThrownBy(() -> memoService.updateMemo(new CurrentUser(-1L), memoId, updateMemoReq))
 			.isInstanceOf(Exception.class);
 
 	}
@@ -101,7 +104,7 @@ class MemoServiceTest {
 		}
 
 		Page<MemoRes> memosByCategoryAndUser = memoService.getMemoByUserIdAndCategoryId(
-			testUser.getId(),
+			new CurrentUser(testUser.getId()),
 			category.getId(),
 			PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"))
 		);
@@ -120,9 +123,9 @@ class MemoServiceTest {
 		Memo savedMemo = memoRepository.save(Memo.create(testUser, category, "삭제될거임"));
 
 		assertThat(memoRepository.findAll().size()).isEqualTo(1);
-		assertThatThrownBy(() -> memoService.deleteMemo(-1L, savedMemo.getId()))
+		assertThatThrownBy(() -> memoService.deleteMemo(new CurrentUser(-1L), savedMemo.getId()))
 			.isInstanceOf(Exception.class);
-		memoService.deleteMemo(1L, savedMemo.getId());
+		memoService.deleteMemo(new CurrentUser(testUser.getId()), savedMemo.getId());
 
 		assertThat(memoRepository.findAll().size()).isEqualTo(0);
 

@@ -34,7 +34,7 @@ public class MemoController {
 
 	@PostMapping("")
 	public ResponseEntity<MemoRes> createMemo(CurrentUser currentUser, @RequestBody @Valid MemoReq memoReq) {
-		MemoRes memoRes = memoService.createMemo(currentUser.getUserId(), memoReq);
+		MemoRes memoRes = memoService.createMemo(currentUser, memoReq);
 		return ResponseEntity.status(201).body(memoRes);
 	}
 
@@ -42,13 +42,13 @@ public class MemoController {
 	@PatchMapping("/{memoId}")
 	public ResponseEntity<MemoRes> updateMemo(CurrentUser currentUser, @PathVariable long memoId,
 		@RequestBody @Valid UpdateMemoReq updateMemoReq) {
-		MemoRes memoRes = memoService.updateMemo(currentUser.getUserId(), memoId, updateMemoReq);
+		MemoRes memoRes = memoService.updateMemo(currentUser, memoId, updateMemoReq);
 		return ResponseEntity.ok(memoRes);
 	}
 
 	@DeleteMapping("/{memoId}")
 	public ResponseEntity<Void> deleteMemo(CurrentUser currentUser, @PathVariable long memoId) {
-		memoService.deleteMemo(currentUser.getUserId(), memoId);
+		memoService.deleteMemo(currentUser, memoId);
 		return ResponseEntity.ok().build();
 	}
 
@@ -56,7 +56,7 @@ public class MemoController {
 	public ResponseEntity<Page<MemoRes>> listMemosWithCategory(CurrentUser currentUser,
 		@RequestParam Long categoryId,
 		@PageableDefault(size = 100) Pageable pageable) {
-		Page<MemoRes> memos = memoService.getMemoByUserIdAndCategoryId(currentUser.getUserId(),
+		Page<MemoRes> memos = memoService.getMemoByUserIdAndCategoryId(currentUser,
 			categoryId, pageable);
 		return ResponseEntity.ok(memos);
 

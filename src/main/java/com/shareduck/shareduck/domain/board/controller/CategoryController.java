@@ -30,7 +30,7 @@ public class CategoryController {
 
 	@GetMapping("")
 	public ResponseEntity<List<CategoryRes>> listCategories(CurrentUser currentUser) {
-		List<CategoryRes> categories = categoryService.listUserCategories(currentUser.getUserId());
+		List<CategoryRes> categories = categoryService.listUserCategories(currentUser);
 
 		return ResponseEntity.ok(categories); //TODO
 	}
@@ -45,7 +45,7 @@ public class CategoryController {
 	@PatchMapping("/{categoryId}")
 	public ResponseEntity<CategoryRes> updateCategory(CurrentUser currentUser, @PathVariable long categoryId,
 		@RequestBody CategoryReq categoryReq) {
-		CategoryRes categoryRes = categoryService.updateCategory(currentUser.getUserId(), categoryId, categoryReq);
+		CategoryRes categoryRes = categoryService.updateCategory(currentUser, categoryId, categoryReq);
 		return ResponseEntity.ok(categoryRes); //TODO
 	}
 

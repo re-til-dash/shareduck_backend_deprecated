@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.shareduck.shareduck.common.request.dto.CurrentUser;
 import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.repository.CategoryRepository;
 import com.shareduck.shareduck.domain.board.request.CategoryReq;
@@ -70,7 +71,8 @@ class CategoryServiceTest {
 		Map<String, Object> updatedProperties = Map.of("updateKey", 1, "updatedKey2", "updatedValue2");
 		CategoryReq updatedCategoryReq = CategoryReq.testConstructor(updatedCategoryName, updatedProperties);
 
-		CategoryRes updatedCategoryRes = categoryService.updateCategory(testUser.getId(), categoryRes.getId(),
+		CategoryRes updatedCategoryRes = categoryService.updateCategory(new CurrentUser(testUser.getId()),
+			categoryRes.getId(),
 			updatedCategoryReq);
 
 		assertThat(updatedCategoryRes.getName()).isEqualTo(updatedCategoryName);
@@ -92,7 +94,8 @@ class CategoryServiceTest {
 		Map<String, Object> updatedProperties = Map.of("updateKey", 1, "updatedKey2", "updatedValue2");
 		CategoryReq updatedCategoryReq = CategoryReq.testConstructor(categoryName, properties);
 
-		assertThatThrownBy(() -> categoryService.updateCategory(2L, categoryRes.getId(), updatedCategoryReq))
+		assertThatThrownBy(
+			() -> categoryService.updateCategory(new CurrentUser(-1L), categoryRes.getId(), updatedCategoryReq))
 			.isInstanceOf(RuntimeException.class);
 	}
 
@@ -107,7 +110,7 @@ class CategoryServiceTest {
 			);
 			categoryService.createCategory(testUser.getId(), categoryReq);
 		}
-		List<CategoryRes> categoryRes = categoryService.listUserCategories(testUser.getId());
+		List<CategoryRes> categoryRes = categoryService.listUserCategories(new CurrentUser(testUser.getId()));
 		assertThat(categoryRes.size()).isEqualTo(5);
 		for (int i = 0; i < 5; i++) {
 			assertThat(categoryRes.get(i).getName()).isEqualTo("카테고리" + i);

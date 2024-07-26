@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shareduck.shareduck.common.exception.BusinessLogicException;
+import com.shareduck.shareduck.common.request.dto.CurrentUser;
 import com.shareduck.shareduck.common.security.exception.AuthExceptionCode;
 import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.entity.Hashtag;
@@ -35,23 +36,25 @@ public class PostService {
 
 	private final CategoryService categoryService;
 
-	public Post findById(Long postId) {
+	public Post findPostById(Long postId) {
 		return postRepository.findById(postId)
-			.orElseThrow(RuntimeException::new);
+			.orElseThrow(() -> new RuntimeException("%d번 글은 존재하지 않음".formatted(postId)));
 	}
 
-	public void checkAccess(Long userId, Post post) {
-		if (!post.getUser().getId().equals(userId)) {
-			throw new RuntimeException(String.format("user %d cannot access post %d", userId, post.getId()));
+	public Post findPostByIdAndCheckAccess(Long postId, CurrentUser currentUser) {
+		Post post = findPostById(postId);
+		if (!post.getUser().getId().equals(currentUser.getUserId())) {
+			throw new RuntimeException(
+				String.format("user %d cannot access post %d", currentUser.getUserId(), post.getId()));
 		}
+		return post;
 	}
 
-	public PostRes createPost(Long userId, PostCreateReq postCreateReq) {
-		UserEntity user = userRepository.findById(userId)
+	public PostRes createPost(CurrentUser currentUser, PostCreateReq postCreateReq) {
+		UserEntity user = userRepository.findById(currentUser.getUserId())
 			.orElseThrow(() -> new BusinessLogicException(AuthExceptionCode.USER_NOT_FOUND));
 
-		Category category = categoryService.findById(postCreateReq.getCategoryId());
-		categoryService.checkAccess(category, userId);
+		Category category = categoryService.findCategoryByIdAndCheckAccess(postCreateReq.getCategoryId(), currentUser);
 
 		Post newPost = Post.builder()
 			.user(user)
@@ -71,15 +74,14 @@ public class PostService {
 
 	}
 
-	public PostRes getPostDetail(Long userId, Long postId) {
-		Post post = findById(postId);
-		checkAccess(userId, post);
+	public PostRes getPostDetail(CurrentUser currentUser, Long postId) {
+		Post post = findPostByIdAndCheckAccess(postId, currentUser);
 		return PostRes.from(post);
 	}
 
 	@Transactional(readOnly = true)
-	public PostRes updatePost(Long userId, Long postId, PostUpdateReq postUpdateReq) {
-		Post post = findById(postId);
+	public PostRes updatePost(CurrentUser currentUser, Long postId, PostUpdateReq postUpdateReq) {
+		Post post = findPostByIdAndCheckAccess(postId, currentUser);
 		updatePostHashtag(post, postUpdateReq.getHashTags());
 
 		post.update(
@@ -107,20 +109,17 @@ public class PostService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<PostSimpleRes> getSimplepostPage(Long userId, Long categoryId, Pageable pageable) {
-		Category category = categoryService.findById(categoryId);
-		categoryService.checkAccess(category, userId);
+	public Page<PostSimpleRes> getSimplepostPage(CurrentUser currentUser, Long categoryId, Pageable pageable) {
+		categoryService.findCategoryByIdAndCheckAccess(categoryId, currentUser);
 
 		Page<Post> posts = postRepository.findPostByCategoryIdOrderByIdDesc(categoryId,
 			pageable);
-		Page<PostSimpleRes> postSimpleResPage = posts.map(PostSimpleRes::from);
-		return postSimpleResPage;
+		return posts.map(PostSimpleRes::from);
+
 	}
 
-	public void deletePost(Long userId, Long postId) {
-		Post post = postRepository.findById(postId)
-			.orElseThrow(RuntimeException::new);
-		checkAccess(userId, post);
+	public void deletePost(CurrentUser currentUser, Long postId) {
+		Post post = findPostByIdAndCheckAccess(postId, currentUser);
 		postRepository.delete(post);
 	}
 }

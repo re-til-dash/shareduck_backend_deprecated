@@ -36,26 +36,26 @@ public class PostController {
 	@PostMapping("/posts")
 	public ResponseEntity<PostRes> createPost(CurrentUser currentUser,
 		@RequestBody @Valid PostCreateReq postCreateReq) {
-		PostRes postRes = postService.createPost(currentUser.getUserId(), postCreateReq);
+		PostRes postRes = postService.createPost(currentUser, postCreateReq);
 		return ResponseEntity.ok(postRes);
 	}
 
 	@GetMapping("posts/{postId}")
 	public ResponseEntity<PostRes> getSinglePost(CurrentUser currentUser, @PathVariable Long postId) {
-		PostRes postRes = postService.getPostDetail(currentUser.getUserId(), postId);
+		PostRes postRes = postService.getPostDetail(currentUser, postId);
 		return ResponseEntity.ok(postRes);
 	}
 
 	@PatchMapping("posts/{postId}")
 	public ResponseEntity<PostRes> updatePost(CurrentUser currentUser, @PathVariable Long postId,
 		@RequestBody @Valid PostUpdateReq postUpdateReq) {
-		PostRes postRes = postService.updatePost(currentUser.getUserId(), postId, postUpdateReq);
+		PostRes postRes = postService.updatePost(currentUser, postId, postUpdateReq);
 		return ResponseEntity.ok(postRes);
 	}
 
 	@DeleteMapping("posts/{postId}")
 	public ResponseEntity<PostRes> deletePost(CurrentUser currentUser, @PathVariable Long postId) {
-		postService.deletePost(currentUser.getUserId(), postId);
+		postService.deletePost(currentUser, postId);
 		return ResponseEntity.ok().build();
 	}
 
@@ -64,7 +64,7 @@ public class PostController {
 		@RequestParam Long categoryId,
 		@PageableDefault(size = 20) Pageable pageable
 	) {
-		Page<PostSimpleRes> postSimpleResponsePage = postService.getSimplepostPage(currentUser.getUserId(),
+		Page<PostSimpleRes> postSimpleResponsePage = postService.getSimplepostPage(currentUser,
 			categoryId, pageable);
 		return ResponseEntity.ok(postSimpleResponsePage);
 	}
