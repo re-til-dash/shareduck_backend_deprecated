@@ -4,6 +4,8 @@ import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
+import java.util.Objects;
+
 import org.hibernate.annotations.Comment;
 
 import jakarta.persistence.Entity;
@@ -11,7 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @NoArgsConstructor(access = PROTECTED)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+
 public class Hashtag {
 
 	@Id
@@ -29,20 +30,31 @@ public class Hashtag {
 
 	@Comment("글번호")
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "board_id")
+	@JoinColumn(name = "post_id")
 	@Setter
-	@EqualsAndHashCode.Include
-	private Board board;
+	private Post post;
 
-	@EqualsAndHashCode.Include
 	@Comment("태그명")
 	private String tag;
 
-	static Hashtag from(@NonNull String tag, @NonNull Board board) {
+	public static Hashtag create(@NonNull String tag) {
 		Hashtag newHashtag = new Hashtag();
 		newHashtag.tag = tag;
-		newHashtag.board = board;
 		return newHashtag;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Hashtag hashtag = (Hashtag)o;
+		return Objects.equals(tag, hashtag.tag);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(tag);
+	}
 }

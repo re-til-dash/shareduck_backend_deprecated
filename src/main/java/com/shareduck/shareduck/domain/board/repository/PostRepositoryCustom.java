@@ -1,4 +1,5 @@
 package com.shareduck.shareduck.domain.board.repository;
 
-public interface BoardRepositoryCustom {
+public interface PostRepositoryCustom {
+
 }

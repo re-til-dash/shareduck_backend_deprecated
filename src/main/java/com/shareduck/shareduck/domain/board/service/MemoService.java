@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shareduck.shareduck.common.exception.BusinessLogicException;
+import com.shareduck.shareduck.common.request.dto.CurrentUser;
 import com.shareduck.shareduck.common.security.exception.AuthExceptionCode;
 import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.entity.Memo;
@@ -22,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class MemoService {
 
 	private final MemoRepository memoRepository;
@@ -34,17 +35,15 @@ public class MemoService {
 	/**
 	 * 새로운 메모 생성
 	 *
-	 * @param userId
-	 * @param memoReq {@link MemoReq}
+	 * @param currentUser currentUser
+	 * @param memoReq     {@link MemoReq}
 	 * @return MemoRes {@link MemoRes}
 	 */
-	@Transactional(readOnly = false)
-	public MemoRes createMemo(Long userId, MemoReq memoReq) {
-		UserEntity user = userRepository.findById(userId)
+	public MemoRes createMemo(CurrentUser currentUser, MemoReq memoReq) {
+		UserEntity user = userRepository.findById(currentUser.getUserId())
 			.orElseThrow(() -> new BusinessLogicException(AuthExceptionCode.USER_NOT_FOUND));
 
-		Category category = categoryService.findById(memoReq.getCategoryId());
-		categoryService.checkAccess(category, userId);
+		Category category = categoryService.findCategoryByIdAndCheckAccess(memoReq.getCategoryId(), currentUser);
 
 		Memo newMemo = Memo.create(user, category, memoReq.getContent());
 		memoRepository.save(newMemo);
@@ -54,14 +53,13 @@ public class MemoService {
 	/**
 	 * 메모 삭제
 	 *
-	 * @param userId
-	 * @param memoId
+	 * @param currentUser 현재유저
+	 * @param memoId      메모ID
 	 */
-	@Transactional(readOnly = false)
-	public void deleteMemo(long userId, long memoId) {
+	public void deleteMemo(CurrentUser currentUser, long memoId) {
 		Memo memo = memoRepository.findById(memoId)
 			.orElseThrow(RuntimeException::new);
-		if (!canAccess(userId, memo)) {
+		if (!canAccess(currentUser.getUserId(), memo)) {
 			throw new BusinessLogicException(AuthExceptionCode.UNAUTHENTICATED);
 		}
 		memoRepository.delete(memo);
@@ -70,15 +68,14 @@ public class MemoService {
 	/**
 	 * 메모 변경
 	 *
-	 * @param userId
-	 * @param memoId
+	 * @param currentUser   currentUser
+	 * @param memoId        메모Id
 	 * @param updateMemoReq {@link UpdateMemoReq}
 	 */
-	@Transactional(readOnly = false)
-	public MemoRes updateMemo(long userId, Long memoId, UpdateMemoReq updateMemoReq) {
+	public MemoRes updateMemo(CurrentUser currentUser, Long memoId, UpdateMemoReq updateMemoReq) {
 		Memo memo = memoRepository.findById(memoId)
 			.orElseThrow(RuntimeException::new);
-		if (!canAccess(userId, memo)) {
+		if (!canAccess(currentUser.getUserId(), memo)) {
 			throw new BusinessLogicException(AuthExceptionCode.UNAUTHENTICATED);
 		}
 		memo.changeContent(updateMemoReq.getContent());
@@ -88,8 +85,8 @@ public class MemoService {
 	/**
 	 * 접근가능한지 확인
 	 *
-	 * @param userId
-	 * @param memo
+	 * @param userId 유저아이디
+	 * @param memo   메모
 	 * @return 접근가능여부
 	 */
 	private boolean canAccess(Long userId, Memo memo) {
@@ -99,14 +96,15 @@ public class MemoService {
 	/**
 	 * 특정 사용자의 특정 카테고리의 메모 최신순으로 가져오기
 	 *
-	 * @param userId
-	 * @param categoryId
-	 * @param pageable
-	 * @return
+	 * @param currentUser 현재유저
+	 * @param categoryId  카테고리아이디
+	 * @param pageable    페이징객체
+	 * @return Memores 페이징객체
 	 */
-	public Page<MemoRes> getMemosByCategoryAndUser(Long userId, long categoryId, Pageable pageable) {
-		Page<Memo> Memos = memoRepository.findByUserIdAndCategoryIdOrderByIdDesc(userId,
-			categoryId, pageable);
+	@Transactional(readOnly = true)
+	public Page<MemoRes> getMemoByUserIdAndCategoryId(CurrentUser currentUser, long categoryId, Pageable pageable) {
+		categoryService.findCategoryByIdAndCheckAccess(categoryId, currentUser);
+		Page<Memo> Memos = memoRepository.findByCategoryIdOrderByIdDesc(categoryId, pageable);
 		return Memos.map(MemoRes::from);
 	}
 }

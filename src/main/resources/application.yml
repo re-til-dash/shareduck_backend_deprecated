@@ -42,3 +42,4 @@ cookie:
   accepted-url: '/api/auth/reissue'
   cookie-name: Refresh
   domain: localhost
+
