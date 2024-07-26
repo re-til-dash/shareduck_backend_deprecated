@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
@@ -83,9 +82,6 @@ public class Post {
 	@Comment("삭제여부")
 	private boolean deleted;
 
-	@Comment("나중을 대비한 식별자 생성때만 널거임")
-	private UUID uuid;
-
 	public void addTag(@NonNull Hashtag hashtag) {
 		this.hashtags.add(hashtag);
 		hashtag.setPost(this);
@@ -98,14 +94,13 @@ public class Post {
 
 	@Builder
 	private Post(UserEntity user, Category category, String title, Map<String, Object> content,
-		Map<String, Object> properties, String thumbnailPath, UUID uuid) {
+		Map<String, Object> properties, String thumbnailPath) {
 		this.user = user;
 		this.category = category;
 		this.title = title;
 		this.content = content;
 		this.properties = properties;
 		this.thumbnailPath = thumbnailPath;
-		this.uuid = uuid;
 	}
 
 	public void update(String title, Map<String, Object> content, Map<String, Object> properties,

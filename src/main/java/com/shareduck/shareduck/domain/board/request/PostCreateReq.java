@@ -4,7 +4,6 @@ import static lombok.AccessLevel.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,16 +33,6 @@ public class PostCreateReq {
 	@NotNull
 	private Map<String, Object> properties;
 
-	@NotNull
-	private UUID uuid;
-
 	private String thumbnailPath;
 
-	public void setUuid(String uuid) {
-		try {
-			this.uuid = UUID.fromString(uuid);
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Invalid UUID format: " + uuid);
-		}
-	}
 }

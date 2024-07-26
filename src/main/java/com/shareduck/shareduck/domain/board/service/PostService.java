@@ -60,7 +60,6 @@ public class PostService {
 			.content(postCreateReq.getContent())
 			.properties(postCreateReq.getProperties())
 			.thumbnailPath(postCreateReq.getThumbnailPath())
-			.uuid(postCreateReq.getUuid())
 			.build();
 
 		for (var tags : postCreateReq.getHashtags()) {
