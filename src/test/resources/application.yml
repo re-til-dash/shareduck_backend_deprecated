@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         highlight_sql: true
@@ -24,10 +24,12 @@ spring:
     redis:
       host: 127.0.0.1   #${REDIS_URL}
       port: 6379
-logging:
-  level:
-    org.hibernate.sql: info
-    org.hibernate.type.descriptor.sql: trace
+  profiles:
+    active: test
+#logging:
+#  level:
+#    org.hibernate.sql: info
+#    org.hibernate.type.descriptor.sql: trace
 
 jwt:
   prefix: 'Bearer '

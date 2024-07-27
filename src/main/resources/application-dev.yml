@@ -1,19 +1,12 @@
 spring:
-  application:
-    name: shareduck
-  datasource:
-    url: jdbc:mysql://${DATABASE_URL}/shareduck
-    password: ${DB_PASSWORD}
-    username: ${DB_ID}
-    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
-        highlight_sql: true
-        show_sql: true
-        format_sql: true
+        highlight_sql: false
+        show_sql: false
+        format_sql: false
         default_batch_fetch_size: 100
         order_inserts: true
         order_updates: true
@@ -25,18 +18,13 @@ spring:
       host: 127.0.0.1   #${REDIS_URL}
       port: 6379
 
-  servlet:
-    multipart:
-      max-file-size: 2MB
-      max-request-size: 2MB
-      enabled: true
-#      file-size-threshold: 1MB
-#      location: /tmp
+
 
 logging:
   level:
-    org.hibernate.sql: info
-    org.hibernate.type.descriptor.sql: trace
+    org.hibernate.sql: warn
+    org.hibernate.type.descriptor.sql: warn
+    root: warn
 
 
 
@@ -65,3 +53,15 @@ aws:
     postImage.root: ${SHAREDUCK_POSTIMAGE_ROOT_PATH}
   cloudfront:
     host: ${SHAREDUCK_CLOUDFRONT_HOST}
+
+
+
+
+
+server:
+  port: 8080
+  ssl:
+    key-store: ${SHAREDUCK_KEY_STORE}
+    key-store-password: ${SHAREDUCK_KEY_STORE_PASSWORD}
+    key-store-type: PKCS12
+    key-alias: tomcat
