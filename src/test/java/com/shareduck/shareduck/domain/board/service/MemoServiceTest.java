@@ -19,6 +19,7 @@ import com.shareduck.shareduck.domain.board.entity.Memo;
 import com.shareduck.shareduck.domain.board.repository.CategoryRepository;
 import com.shareduck.shareduck.domain.board.repository.MemoRepository;
 import com.shareduck.shareduck.domain.board.request.MemoReq;
+import com.shareduck.shareduck.domain.board.request.MemoSearchConditions;
 import com.shareduck.shareduck.domain.board.request.UpdateMemoReq;
 import com.shareduck.shareduck.domain.board.response.MemoRes;
 import com.shareduck.shareduck.domain.user.entity.UserEntity;
@@ -103,9 +104,9 @@ class MemoServiceTest {
 			memoRepository.save(Memo.create(testUser, category, "컨텐츠" + i));
 		}
 
-		Page<MemoRes> memosByCategoryAndUser = memoService.getMemoByUserIdAndCategoryId(
+		Page<MemoRes> memosByCategoryAndUser = memoService.getMemosBySearchConditions(
 			new CurrentUser(testUser.getId()),
-			category.getId(),
+			new MemoSearchConditions(category.getId(), null),
 			PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"))
 		);
 

@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.shareduck.shareduck.common.exception.BusinessLogicException;
 import com.shareduck.shareduck.common.request.dto.CurrentUser;
@@ -12,6 +13,7 @@ import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.entity.Memo;
 import com.shareduck.shareduck.domain.board.repository.MemoRepository;
 import com.shareduck.shareduck.domain.board.request.MemoReq;
+import com.shareduck.shareduck.domain.board.request.MemoSearchConditions;
 import com.shareduck.shareduck.domain.board.request.UpdateMemoReq;
 import com.shareduck.shareduck.domain.board.response.MemoRes;
 import com.shareduck.shareduck.domain.user.entity.UserEntity;
@@ -96,15 +98,23 @@ public class MemoService {
 	/**
 	 * 특정 사용자의 특정 카테고리의 메모 최신순으로 가져오기
 	 *
-	 * @param currentUser 현재유저
-	 * @param categoryId  카테고리아이디
-	 * @param pageable    페이징객체
+	 * @param currentUser          현재유저
+	 * @param memoSearchConditions {@link MemoSearchConditions} 메모검색조건
+	 * @param pageable             페이징객체
 	 * @return Memores 페이징객체
 	 */
 	@Transactional(readOnly = true)
-	public Page<MemoRes> getMemoByUserIdAndCategoryId(CurrentUser currentUser, long categoryId, Pageable pageable) {
-		categoryService.findCategoryByIdAndCheckAccess(categoryId, currentUser);
-		Page<Memo> Memos = memoRepository.findByCategoryIdOrderByIdDesc(categoryId, pageable);
-		return Memos.map(MemoRes::from);
+	public Page<MemoRes> getMemosBySearchConditions(CurrentUser currentUser, MemoSearchConditions memoSearchConditions,
+		Pageable pageable) {
+		Page<Memo> memos;
+		if (StringUtils.hasText(memoSearchConditions.keyword())) {
+			memos = memoRepository.findByCategoryIdAndKeyword(memoSearchConditions.categoryId(),
+				memoSearchConditions.keyword(), pageable);
+		} else {
+			memos = memoRepository.findByCategoryIdOrderByIdDesc(memoSearchConditions.categoryId(), pageable);
+
+		}
+		return memos.map(MemoRes::from);
 	}
+
 }
