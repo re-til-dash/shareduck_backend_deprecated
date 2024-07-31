@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shareduck.shareduck.common.request.dto.CurrentUser;
 import com.shareduck.shareduck.domain.board.request.MemoReq;
+import com.shareduck.shareduck.domain.board.request.MemoSearchConditions;
 import com.shareduck.shareduck.domain.board.request.UpdateMemoReq;
 import com.shareduck.shareduck.domain.board.response.MemoRes;
 import com.shareduck.shareduck.domain.board.service.MemoService;
@@ -54,12 +54,11 @@ public class MemoController {
 
 	@GetMapping("")
 	public ResponseEntity<Page<MemoRes>> listMemosWithCategory(CurrentUser currentUser,
-		@RequestParam Long categoryId,
+		@Valid MemoSearchConditions memoSearchConditions,
 		@PageableDefault(size = 100) Pageable pageable) {
-		Page<MemoRes> memos = memoService.getMemoByUserIdAndCategoryId(currentUser,
-			categoryId, pageable);
-		return ResponseEntity.ok(memos);
 
+		Page<MemoRes> memos = memoService.getMemosBySearchConditions(currentUser, memoSearchConditions, pageable);
+		return ResponseEntity.ok(memos);
 	}
 
 }
