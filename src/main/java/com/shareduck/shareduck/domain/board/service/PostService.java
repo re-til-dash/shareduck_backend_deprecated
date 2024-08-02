@@ -36,6 +36,7 @@ public class PostService {
 
 	private final CategoryService categoryService;
 
+	@Transactional(readOnly = true)
 	public Post findPostById(Long postId) {
 		return postRepository.findById(postId)
 			.orElseThrow(() -> new RuntimeException("%d번 글은 존재하지 않음".formatted(postId)));
@@ -74,12 +75,12 @@ public class PostService {
 
 	}
 
+	@Transactional(readOnly = true)
 	public PostRes getPostDetail(CurrentUser currentUser, Long postId) {
 		Post post = findPostByIdAndCheckAccess(postId, currentUser);
 		return PostRes.from(post);
 	}
 
-	@Transactional(readOnly = true)
 	public PostRes updatePost(CurrentUser currentUser, Long postId, PostUpdateReq postUpdateReq) {
 		Post post = findPostByIdAndCheckAccess(postId, currentUser);
 		updatePostHashtag(post, postUpdateReq.getHashTags());

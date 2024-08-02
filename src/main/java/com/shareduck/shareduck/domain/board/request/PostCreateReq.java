@@ -2,10 +2,11 @@ package com.shareduck.shareduck.domain.board.request;
 
 import static lombok.AccessLevel.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,20 +19,16 @@ import lombok.NoArgsConstructor;
 @Builder(builderClassName = "TEST_BUILDER")
 public class PostCreateReq {
 
-	@NotNull
+	@NotNull(message = "카테고리아이디는 반드시 지정되어야 한다")
 	private Long categoryId;
 
-	@NotBlank
 	private String title;
 
-	@NotNull
-	private Map<String, Object> content;
+	private Map<String, Object> content = new HashMap<>();
 
-	@NotNull
-	private List<String> hashtags;
+	private List<String> hashtags = new ArrayList<>();
 
-	@NotNull
-	private Map<String, Object> properties;
+	private Map<String, Object> properties = new HashMap<>();
 
 	private String thumbnailPath;
 
