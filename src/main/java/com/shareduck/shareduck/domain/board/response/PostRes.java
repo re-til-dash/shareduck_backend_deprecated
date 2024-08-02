@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.shareduck.shareduck.domain.board.entity.Hashtag;
 import com.shareduck.shareduck.domain.board.entity.Post;
+import com.shareduck.shareduck.domain.board.enumerate.PostState;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,7 @@ public class PostRes {
 
 	private LocalDateTime modifiedAt;
 
-	private boolean deleted;
+	private PostState state;
 
 	public static PostRes from(Post post) {
 		PostRes postRes = new PostRes();
@@ -50,7 +51,7 @@ public class PostRes {
 		postRes.properties = post.getProperties();
 		postRes.createdAt = post.getCreatedAt();
 		postRes.modifiedAt = post.getModifiedAt();
-		postRes.deleted = post.isDeleted();
+		postRes.state = post.getState();
 		postRes.thumbnailPath = post.getThumbnailPath();
 		return postRes;
 	}

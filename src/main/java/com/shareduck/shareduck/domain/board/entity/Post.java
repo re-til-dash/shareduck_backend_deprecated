@@ -1,6 +1,7 @@
 package com.shareduck.shareduck.domain.board.entity;
 
 import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
@@ -18,10 +19,12 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.shareduck.shareduck.domain.board.enumerate.PostState;
 import com.shareduck.shareduck.domain.user.entity.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -35,7 +38,7 @@ import lombok.NonNull;
 @Getter
 @Entity
 @NoArgsConstructor(access = PROTECTED)
-@SQLDelete(sql = "UPDATE POST SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE POST SET state = 'DELETED' WHERE id = ?")
 public class Post {
 
 	@Id
@@ -79,8 +82,9 @@ public class Post {
 	@Comment("마지막수정일")
 	private LocalDateTime modifiedAt;
 
-	@Comment("삭제여부")
-	private boolean deleted;
+	@Comment("상태 (대기중, 활성화, 삭제)")
+	@Enumerated(STRING)
+	private PostState state = PostState.PENDING;
 
 	public void addTag(@NonNull Hashtag hashtag) {
 		this.hashtags.add(hashtag);
@@ -109,5 +113,6 @@ public class Post {
 		this.content = content;
 		this.properties = properties;
 		this.thumbnailPath = thumbnailPath;
+		this.state = PostState.ACTIVE;
 	}
 }
