@@ -113,7 +113,7 @@ public class PostService {
 	public Page<PostSimpleRes> getSimplepostPage(CurrentUser currentUser, Long categoryId, Pageable pageable) {
 		categoryService.findCategoryByIdAndCheckAccess(categoryId, currentUser);
 
-		Page<Post> posts = postRepository.findPostByCategoryIdOrderByIdDesc(categoryId,
+		Page<Post> posts = postRepository.findActivePostByCategoryId(categoryId,
 			pageable);
 		return posts.map(PostSimpleRes::from);
 
