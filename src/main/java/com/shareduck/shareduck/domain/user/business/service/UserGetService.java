@@ -7,5 +7,7 @@ public interface UserGetService {
 
     void validEntityExist(String email);
 
+    UserEntity validEntityExist(Long userId);
+
     Optional<UserEntity> getOptional(Long userId);
 }

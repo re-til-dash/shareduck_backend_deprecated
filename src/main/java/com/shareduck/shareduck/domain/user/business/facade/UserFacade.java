@@ -4,6 +4,7 @@ import com.shareduck.shareduck.domain.user.business.mapper.UserMapper;
 import com.shareduck.shareduck.domain.user.business.service.UserGetService;
 import com.shareduck.shareduck.domain.user.business.service.UserService;
 import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.web.dto.request.PatchUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.response.PostUserResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,12 @@ public class UserFacade {
     public void delete(Long userId) {
         userGetService.getOptional(userId)
             .ifPresent(userService::delete);
+    }
+
+    public PostUserResponse patch(PatchUserRequest dto, Long userId) {
+        UserEntity request = mapper.toEntity(dto, userId);
+        UserEntity saved = userGetService.validEntityExist(userId);
+        UserEntity result = userService.patch(saved, request);
+        return mapper.toDto(result);
     }
 }

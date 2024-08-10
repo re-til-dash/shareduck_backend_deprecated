@@ -6,7 +6,8 @@ public record PostUserRequest(
     @Email(message = " check the email format.")
     String email,
     //TODO : Password Validation
-    String password
+    String password,
+    String profile
 ) {
 
 }

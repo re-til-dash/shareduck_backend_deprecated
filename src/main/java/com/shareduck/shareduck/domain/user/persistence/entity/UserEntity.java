@@ -11,6 +11,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,5 +53,13 @@ public class UserEntity extends BaseEntity {
     public void delete(){
         this.state = UserState.DELETE;
         this.deleteDate = LocalDate.now();
+    }
+
+    //TODO : Entity 설계 완성 후 추가 설계 필수
+    public UserEntity update(UserEntity request) {
+        Optional.ofNullable(request.nickname).ifPresent(this::addNickname);
+        Optional.ofNullable(request.profile).ifPresent(e -> this.profile = e);
+        Optional.ofNullable(request.phone).ifPresent(e -> this.phone = e);
+        return this;
     }
 }

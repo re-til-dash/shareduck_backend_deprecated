@@ -31,4 +31,10 @@ public class UserServiceImpl implements UserService {
         entity.delete();
     }
 
+    @Override
+    public UserEntity patch(UserEntity saved, UserEntity request) {
+        return saved.update(request);
+    }
+
+
 }
