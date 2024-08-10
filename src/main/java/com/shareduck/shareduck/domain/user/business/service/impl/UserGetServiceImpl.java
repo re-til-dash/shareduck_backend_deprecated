@@ -1,7 +1,9 @@
 package com.shareduck.shareduck.domain.user.business.service.impl;
 
 import com.shareduck.shareduck.domain.user.business.service.UserGetService;
+import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
 import com.shareduck.shareduck.domain.user.persistence.repository.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,11 @@ public class UserGetServiceImpl implements UserGetService {
                     throw new RuntimeException("User with email " + email + " already exists");
                 }
             );
+    }
+
+    @Override
+    public Optional<UserEntity> getOptional(Long userId) {
+        return repository.findById(userId);
     }
 }
 //TODO : Exceptuion 코드 수정

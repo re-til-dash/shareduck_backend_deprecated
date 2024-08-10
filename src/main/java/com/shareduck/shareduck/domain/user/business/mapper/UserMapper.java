@@ -2,6 +2,7 @@ package com.shareduck.shareduck.domain.user.business.mapper;
 
 import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
 import com.shareduck.shareduck.domain.user.persistence.enums.UserRole;
+import com.shareduck.shareduck.domain.user.persistence.enums.UserState;
 import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.response.PostUserResponse;
 import java.util.UUID;
@@ -15,6 +16,7 @@ public class UserMapper {
             .email(dto.email())
             .password(dto.password())
             .nickname(UUID.randomUUID().toString())
+            .state(UserState.ACTIVE)
             .role(UserRole.USER)
             .build();
     }

@@ -27,4 +27,9 @@ public class UserFacade {
         log.info("join user count = {}", result.getId());
         return mapper.toDto(result);
     }
+
+    public void delete(Long userId) {
+        userGetService.getOptional(userId)
+            .ifPresent(userService::delete);
+    }
 }

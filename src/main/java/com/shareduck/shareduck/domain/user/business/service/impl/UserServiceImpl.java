@@ -18,11 +18,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final PasswordEncoder encoder;
 
+    @Override
     public UserEntity post(UserEntity entity) {
         entity.addPassword(encoder.encode(entity.getPassword()));
         UserEntity save = repository.save(entity);
         log.debug("current post user count = {}", save.getId());
         return save;
+    }
+
+    @Override
+    public void delete(UserEntity entity) {
+        entity.delete();
     }
 
 }
