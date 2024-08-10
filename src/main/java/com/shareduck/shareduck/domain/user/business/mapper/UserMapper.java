@@ -5,6 +5,7 @@ import com.shareduck.shareduck.domain.user.persistence.enums.UserRole;
 import com.shareduck.shareduck.domain.user.persistence.enums.UserState;
 import com.shareduck.shareduck.domain.user.web.dto.request.PatchUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
+import com.shareduck.shareduck.domain.user.web.dto.response.PasswordUserResponse;
 import com.shareduck.shareduck.domain.user.web.dto.response.PatchUserResponse;
 import com.shareduck.shareduck.domain.user.web.dto.response.PostUserResponse;
 import java.time.LocalDateTime;

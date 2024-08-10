@@ -8,4 +8,6 @@ public interface UserService {
     void delete(UserEntity entity);
 
     UserEntity patch(UserEntity saved, UserEntity request);
+
+    UserEntity changePassword(UserEntity entity, String password);
 }

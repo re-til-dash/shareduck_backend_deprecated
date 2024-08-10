@@ -40,4 +40,9 @@ public class UserFacade {
         UserEntity result = userService.patch(saved, request);
         return mapper.toDto(result);
     }
+
+    public void changePassword(Long userId, String password) {
+        UserEntity entity = userGetService.validEntityExist(userId);
+        userService.changePassword(entity, password);
+    }
 }

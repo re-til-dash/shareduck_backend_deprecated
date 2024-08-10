@@ -3,10 +3,13 @@ package com.shareduck.shareduck.domain.user.web.controller;
 import com.shareduck.shareduck.common.request.dto.CurrentUser;
 import com.shareduck.shareduck.domain.user.business.facade.UserFacade;
 import com.shareduck.shareduck.domain.user.web.controller.doc.UserControllerDoc;
+import com.shareduck.shareduck.domain.user.web.dto.request.PasswordUserRequest;
+import com.shareduck.shareduck.domain.user.web.dto.request.PatchUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.response.PostUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +29,15 @@ public class UserController implements UserControllerDoc {
     @DeleteMapping
     public void delete(CurrentUser user){
         facade.delete(user.getUserId());
+    }
+
+    @PatchMapping
+    public PostUserResponse patch(@RequestBody PatchUserRequest dto,CurrentUser user){
+        return facade.patch(dto,user.getUserId());
+    }
+
+    @PatchMapping("/password")
+    public void changePassword(@RequestBody PasswordUserRequest dto,CurrentUser user){
+        facade.changePassword(user.getUserId(),dto.password());
     }
 }

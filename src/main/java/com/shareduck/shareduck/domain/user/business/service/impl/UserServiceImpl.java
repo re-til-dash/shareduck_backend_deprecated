@@ -36,5 +36,9 @@ public class UserServiceImpl implements UserService {
         return saved.update(request);
     }
 
+    @Override
+    public UserEntity changePassword(UserEntity entity, String password) {
+        return entity.addPassword(encoder.encode(password));
+    }
 
 }
