@@ -45,6 +45,24 @@ public class UserGetServiceImpl implements UserGetService {
         return repository.findById(userId);
     }
 
+    @Override
+    public UserEntity get(Long userId) {
+        return getOptional(userId)
+            .orElseThrow(
+                () ->
+                    new BusinessLogicException(UserExceptionCode.USER_NOT_FOUND)
+            );
+    }
+
+    @Override
+    public UserEntity get(String idx) {
+        return repository.findByIdx(idx)
+            .orElseThrow(
+                () ->
+                    new BusinessLogicException(UserExceptionCode.USER_NOT_FOUND)
+            );
+    }
+
     private void validProviderJwt(UserEntity entity){
         if(entity.getProvider() != ProviderEnum.JWT)
             throw new BusinessLogicException(UserExceptionCode.NOT_SUPPORT_PROVIDER);

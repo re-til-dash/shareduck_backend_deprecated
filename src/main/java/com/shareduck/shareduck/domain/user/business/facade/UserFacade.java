@@ -47,4 +47,12 @@ public class UserFacade {
         UserEntity result = userService.changePassword(entity, password);
         return mapper.toPostDto(result);
     }
+
+    public GetUserResponse get(Long userId) {
+        return mapper.toGetDto(userGetService.get(userId));
+    }
+    //TODO : 다른 사용자가 볼 수 있는 데이터는 제한 되어야한다. 정책 수립 후 변경 예정
+    public GetUserResponse get(String idx) {
+        return mapper.toGetDto(userGetService.get(idx));
+    }
 }

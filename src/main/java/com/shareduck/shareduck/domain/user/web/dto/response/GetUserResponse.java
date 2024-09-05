@@ -8,7 +8,7 @@ import lombok.Builder;
 
 @Builder
 public record GetUserResponse(Long userId, String email, String nickname, String profile,
-                              UserRole role, String phone, LocalDateTime createdAt, ProviderEnum provider,
+                              UserRole role, String phone, LocalDateTime created, LocalDateTime updated, ProviderEnum provider,
                               String idx, UserState state, String name, LocalDateTime lastConnect) {
 
 }

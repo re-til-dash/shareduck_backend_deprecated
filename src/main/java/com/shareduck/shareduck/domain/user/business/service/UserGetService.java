@@ -10,4 +10,8 @@ public interface UserGetService {
     UserEntity validIdExistAndJwt(Long userId);
 
     Optional<UserEntity> getOptional(Long userId);
+
+    UserEntity get(Long userId);
+
+    UserEntity get(String idx);
 }
