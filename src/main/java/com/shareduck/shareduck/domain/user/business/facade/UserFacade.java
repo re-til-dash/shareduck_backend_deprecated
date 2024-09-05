@@ -6,7 +6,8 @@ import com.shareduck.shareduck.domain.user.business.service.UserService;
 import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
 import com.shareduck.shareduck.domain.user.web.dto.request.PatchUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
-import com.shareduck.shareduck.domain.user.web.dto.response.PostUserResponse;
+import com.shareduck.shareduck.domain.user.web.dto.response.GetUserResponse;
+import com.shareduck.shareduck.domain.user.web.dto.response.UserIdResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,11 @@ public class UserFacade {
     private final UserGetService userGetService;
     private final UserService userService;
 
-    public PostUserResponse post(PostUserRequest dto) {
+    public UserIdResponse post(PostUserRequest dto) {
         userGetService.validIdExistAndJwt(dto.email());
         UserEntity result = userService.post(mapper.toEntity(dto));
         log.info("join user count = {}", result.getId());
-        return mapper.toDto(result);
+        return mapper.toPostDto(result);
     }
 
     public void delete(Long userId) {
@@ -34,15 +35,16 @@ public class UserFacade {
             .ifPresent(userService::delete);
     }
 
-    public PostUserResponse patch(PatchUserRequest dto, Long userId) {
+    public UserIdResponse patch(PatchUserRequest dto, Long userId) {
         UserEntity request = mapper.toEntity(dto, userId);
         UserEntity saved = userGetService.validIdExistAndJwt(userId);
         UserEntity result = userService.patch(saved, request);
-        return mapper.toDto(result);
+        return mapper.toPostDto(result);
     }
 
-    public void changePassword(Long userId, String password) {
+    public UserIdResponse changePassword(Long userId, String password) {
         UserEntity entity = userGetService.validIdExistAndJwt(userId);
-        userService.changePassword(entity, password);
+        UserEntity result = userService.changePassword(entity, password);
+        return mapper.toPostDto(result);
     }
 }

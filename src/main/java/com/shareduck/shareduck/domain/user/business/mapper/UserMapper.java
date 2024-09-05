@@ -6,9 +6,8 @@ import com.shareduck.shareduck.domain.user.persistence.enums.UserRole;
 import com.shareduck.shareduck.domain.user.persistence.enums.UserState;
 import com.shareduck.shareduck.domain.user.web.dto.request.PatchUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
-import com.shareduck.shareduck.domain.user.web.dto.response.PasswordUserResponse;
-import com.shareduck.shareduck.domain.user.web.dto.response.PatchUserResponse;
-import com.shareduck.shareduck.domain.user.web.dto.response.PostUserResponse;
+import com.shareduck.shareduck.domain.user.web.dto.response.GetUserResponse;
+import com.shareduck.shareduck.domain.user.web.dto.response.UserIdResponse;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
@@ -41,8 +40,12 @@ public class UserMapper {
             .build();
     }
 
-    public PostUserResponse toDto(UserEntity entity) {
-        return PostUserResponse.builder()
+    public UserIdResponse toPostDto(UserEntity userEntity) {
+        return new UserIdResponse(userEntity.getIdx());
+    }
+
+    public GetUserResponse toGetDto(UserEntity entity) {
+        return GetUserResponse.builder()
             .userId(entity.getId())
             .email(entity.getEmail())
             .nickname(entity.getNickname())
@@ -50,6 +53,9 @@ public class UserMapper {
             .phone(entity.getPhone())
             .createdAt(entity.getCreated())
             .lastConnect(entity.getLastConnect())
+            .role(entity.getRole())
+            .provider(entity.getProvider())
+            .idx(entity.getIdx())
             .build();
     }
 }

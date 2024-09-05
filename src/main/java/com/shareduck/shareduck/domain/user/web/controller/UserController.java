@@ -6,7 +6,7 @@ import com.shareduck.shareduck.domain.user.web.controller.doc.UserControllerDoc;
 import com.shareduck.shareduck.domain.user.web.dto.request.PasswordUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PatchUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
-import com.shareduck.shareduck.domain.user.web.dto.response.PostUserResponse;
+import com.shareduck.shareduck.domain.user.web.dto.response.UserIdResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,7 +22,7 @@ public class UserController implements UserControllerDoc {
     private final UserFacade facade;
 
     @PostMapping
-    public PostUserResponse post(@RequestBody PostUserRequest dto){
+    public UserIdResponse post(@RequestBody PostUserRequest dto){
         return facade.post(dto);
     }
 
@@ -32,12 +32,12 @@ public class UserController implements UserControllerDoc {
     }
 
     @PatchMapping
-    public PostUserResponse patch(@RequestBody PatchUserRequest dto,CurrentUser user){
+    public UserIdResponse patch(@RequestBody PatchUserRequest dto,CurrentUser user){
         return facade.patch(dto,user.getUserId());
     }
 
     @PatchMapping("/password")
-    public void changePassword(@RequestBody PasswordUserRequest dto,CurrentUser user){
-        facade.changePassword(user.getUserId(),dto.password());
+    public UserIdResponse changePassword(@RequestBody PasswordUserRequest dto,CurrentUser user){
+        return facade.changePassword(user.getUserId(),dto.password());
     }
 }
