@@ -1,6 +1,6 @@
 package com.shareduck.shareduck.common.security.vo;
 
-import com.shareduck.shareduck.domain.user.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 import lombok.Getter;
 import org.springframework.security.core.authority.AuthorityUtils;

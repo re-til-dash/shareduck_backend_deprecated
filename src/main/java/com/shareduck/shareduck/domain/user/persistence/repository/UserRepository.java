@@ -1,6 +1,6 @@
-package com.shareduck.shareduck.domain.user.repository;
+package com.shareduck.shareduck.domain.user.persistence.repository;
 
-import com.shareduck.shareduck.domain.user.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

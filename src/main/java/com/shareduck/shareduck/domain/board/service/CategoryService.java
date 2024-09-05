@@ -10,8 +10,8 @@ import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.repository.CategoryRepository;
 import com.shareduck.shareduck.domain.board.request.CategoryReq;
 import com.shareduck.shareduck.domain.board.response.CategoryRes;
-import com.shareduck.shareduck.domain.user.entity.UserEntity;
-import com.shareduck.shareduck.domain.user.repository.UserRepository;
+import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.persistence.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

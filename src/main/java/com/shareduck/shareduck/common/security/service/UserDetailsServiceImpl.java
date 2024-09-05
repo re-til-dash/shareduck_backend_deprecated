@@ -1,8 +1,8 @@
 package com.shareduck.shareduck.common.security.service;
 
 import com.shareduck.shareduck.common.security.vo.Principal;
-import com.shareduck.shareduck.domain.user.entity.UserEntity;
-import com.shareduck.shareduck.domain.user.repository.UserRepository;
+import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

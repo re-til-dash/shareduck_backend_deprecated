@@ -1,6 +1,6 @@
-package com.shareduck.shareduck.domain.user.entity;
+package com.shareduck.shareduck.domain.user.persistence.entity;
 
-import com.shareduck.shareduck.domain.user.entity.enums.UserRole;
+import com.shareduck.shareduck.domain.user.persistence.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

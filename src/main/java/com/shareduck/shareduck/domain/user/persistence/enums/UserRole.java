@@ -1,4 +1,4 @@
-package com.shareduck.shareduck.domain.user.entity.enums;
+package com.shareduck.shareduck.domain.user.persistence.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

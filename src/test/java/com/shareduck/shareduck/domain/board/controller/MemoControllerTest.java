@@ -24,8 +24,8 @@ import com.shareduck.shareduck.domain.board.repository.CategoryRepository;
 import com.shareduck.shareduck.domain.board.repository.MemoRepository;
 import com.shareduck.shareduck.domain.board.request.MemoReq;
 import com.shareduck.shareduck.domain.board.request.UpdateMemoReq;
-import com.shareduck.shareduck.domain.user.entity.UserEntity;
-import com.shareduck.shareduck.domain.user.repository.UserRepository;
+import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.persistence.repository.UserRepository;
 
 @AutoConfigureMockMvc
 @SpringBootTest

@@ -22,8 +22,8 @@ import com.shareduck.shareduck.domain.board.request.MemoReq;
 import com.shareduck.shareduck.domain.board.request.MemoSearchConditions;
 import com.shareduck.shareduck.domain.board.request.UpdateMemoReq;
 import com.shareduck.shareduck.domain.board.response.MemoRes;
-import com.shareduck.shareduck.domain.user.entity.UserEntity;
-import com.shareduck.shareduck.domain.user.repository.UserRepository;
+import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.persistence.repository.UserRepository;
 
 @SpringBootTest
 class MemoServiceTest {

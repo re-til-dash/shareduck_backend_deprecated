@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.shareduck.shareduck.domain.board.entity.Category;
 import com.shareduck.shareduck.domain.board.repository.CategoryRepository;
-import com.shareduck.shareduck.domain.user.entity.UserEntity;
-import com.shareduck.shareduck.domain.user.entity.enums.UserRole;
-import com.shareduck.shareduck.domain.user.repository.UserRepository;
+import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.persistence.enums.UserRole;
+import com.shareduck.shareduck.domain.user.persistence.repository.UserRepository;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
