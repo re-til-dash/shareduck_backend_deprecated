@@ -1,6 +1,7 @@
 package com.shareduck.shareduck.domain.user.business.mapper;
 
 import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.persistence.enums.ProviderEnum;
 import com.shareduck.shareduck.domain.user.persistence.enums.UserRole;
 import com.shareduck.shareduck.domain.user.persistence.enums.UserState;
 import com.shareduck.shareduck.domain.user.web.dto.request.PatchUserRequest;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
+    //TODO : UUID 정책 수립 후 추후 변경 예정
     public UserEntity toEntity(PostUserRequest dto) {
         return UserEntity.builder()
             .email(dto.email())
@@ -23,6 +25,9 @@ public class UserMapper {
             .name(dto.name())
             .profile(dto.profile())
             .state(UserState.ACTIVE)
+            .lastConnect(LocalDateTime.now())
+            .idx(UUID.randomUUID().toString())
+            .provider(ProviderEnum.JWT)
             .role(UserRole.USER)
             .build();
     }

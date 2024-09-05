@@ -5,9 +5,9 @@ import java.util.Optional;
 
 public interface UserGetService {
 
-    void validEntityExist(String email);
+    void validIdExistAndJwt(String email);
 
-    UserEntity validEntityExist(Long userId);
+    UserEntity validIdExistAndJwt(Long userId);
 
     Optional<UserEntity> getOptional(Long userId);
 }

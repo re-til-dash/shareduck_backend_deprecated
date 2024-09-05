@@ -4,6 +4,7 @@ import com.shareduck.shareduck.common.exception.BusinessLogicException;
 import com.shareduck.shareduck.domain.user.business.exception.UserExceptionCode;
 import com.shareduck.shareduck.domain.user.business.service.UserGetService;
 import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.persistence.enums.ProviderEnum;
 import com.shareduck.shareduck.domain.user.persistence.repository.UserRepository;
 import java.util.Optional;
 import jdk.jshell.spi.ExecutionControl.UserException;
@@ -21,7 +22,7 @@ public class UserGetServiceImpl implements UserGetService {
 
     //TODO : Exceptuion 코드 수정
     @Override
-    public void validEntityExist(String email) {
+    public void validIdExistAndJwt(String email) {
         repository.findByEmail(email)
             .ifPresent(
                 user ->
@@ -32,14 +33,21 @@ public class UserGetServiceImpl implements UserGetService {
     }
 
     @Override
-    public UserEntity validEntityExist(Long userId) {
-        return repository.findById(userId)
+    public UserEntity validIdExistAndJwt(Long userId) {
+        UserEntity entity = repository.findById(userId)
             .orElseThrow(() -> new BusinessLogicException(UserExceptionCode.USER_NOT_FOUND));
+        validProviderJwt(entity);
+        return entity;
     }
 
     @Override
     public Optional<UserEntity> getOptional(Long userId) {
         return repository.findById(userId);
+    }
+
+    private void validProviderJwt(UserEntity entity){
+        if(entity.getProvider() != ProviderEnum.JWT)
+            throw new BusinessLogicException(UserExceptionCode.NOT_SUPPORT_PROVIDER);
     }
 }
 

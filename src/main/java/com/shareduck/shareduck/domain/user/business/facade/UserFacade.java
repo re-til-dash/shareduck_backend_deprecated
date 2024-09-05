@@ -23,7 +23,7 @@ public class UserFacade {
     private final UserService userService;
 
     public PostUserResponse post(PostUserRequest dto) {
-        userGetService.validEntityExist(dto.email());
+        userGetService.validIdExistAndJwt(dto.email());
         UserEntity result = userService.post(mapper.toEntity(dto));
         log.info("join user count = {}", result.getId());
         return mapper.toDto(result);
@@ -36,13 +36,13 @@ public class UserFacade {
 
     public PostUserResponse patch(PatchUserRequest dto, Long userId) {
         UserEntity request = mapper.toEntity(dto, userId);
-        UserEntity saved = userGetService.validEntityExist(userId);
+        UserEntity saved = userGetService.validIdExistAndJwt(userId);
         UserEntity result = userService.patch(saved, request);
         return mapper.toDto(result);
     }
 
     public void changePassword(Long userId, String password) {
-        UserEntity entity = userGetService.validEntityExist(userId);
+        UserEntity entity = userGetService.validIdExistAndJwt(userId);
         userService.changePassword(entity, password);
     }
 }
