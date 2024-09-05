@@ -7,8 +7,11 @@ import com.shareduck.shareduck.domain.user.web.dto.request.PasswordUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PatchUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.response.GetUserResponse;
+import com.shareduck.shareduck.domain.user.web.dto.response.GetUserSimpleResponse;
 import com.shareduck.shareduck.domain.user.web.dto.response.UserIdResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -56,5 +59,8 @@ public class UserController implements UserControllerDoc {
         return facade.get(idx);
     }
 
-
+    @GetMapping
+    public Page<GetUserSimpleResponse> get(Pageable pageable) {
+        return facade.get(pageable);
+    }
 }

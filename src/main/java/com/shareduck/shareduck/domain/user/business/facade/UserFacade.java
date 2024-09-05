@@ -7,9 +7,12 @@ import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
 import com.shareduck.shareduck.domain.user.web.dto.request.PatchUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.response.GetUserResponse;
+import com.shareduck.shareduck.domain.user.web.dto.response.GetUserSimpleResponse;
 import com.shareduck.shareduck.domain.user.web.dto.response.UserIdResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,5 +57,9 @@ public class UserFacade {
     //TODO : 다른 사용자가 볼 수 있는 데이터는 제한 되어야한다. 정책 수립 후 변경 예정
     public GetUserResponse get(String idx) {
         return mapper.toGetDto(userGetService.get(idx));
+    }
+
+    public Page<GetUserSimpleResponse> get(Pageable pageable) {
+        return mapper.toGetSimpleDto(userGetService.get(pageable));
     }
 }

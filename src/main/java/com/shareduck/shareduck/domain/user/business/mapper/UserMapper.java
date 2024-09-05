@@ -7,9 +7,13 @@ import com.shareduck.shareduck.domain.user.persistence.enums.UserState;
 import com.shareduck.shareduck.domain.user.web.dto.request.PatchUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.response.GetUserResponse;
+import com.shareduck.shareduck.domain.user.web.dto.response.GetUserSimpleResponse;
 import com.shareduck.shareduck.domain.user.web.dto.response.UserIdResponse;
+import com.sun.source.tree.GuardedPatternTree;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -58,5 +62,23 @@ public class UserMapper {
             .provider(entity.getProvider())
             .idx(entity.getIdx())
             .build();
+    }
+
+    public Page<GetUserSimpleResponse> toGetSimpleDto(Page<UserEntity> entities) {
+        return entities.map(this::toGetSimpleDto);
+    }
+
+    private GetUserSimpleResponse toGetSimpleDto(UserEntity entity) {
+        return GetUserSimpleResponse.builder()
+            .idx(entity.getIdx())
+            .nickname(entity.getNickname())
+            .profile(entity.getProfile())
+            .name(entity.getName())
+            .email(entity.getEmail())
+            .lastConnect(entity.getLastConnect())
+            .created(entity.getCreated())
+            .updated(entity.getUpdated())
+            .build();
+
     }
 }

@@ -7,9 +7,10 @@ import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
 import com.shareduck.shareduck.domain.user.persistence.enums.ProviderEnum;
 import com.shareduck.shareduck.domain.user.persistence.repository.UserRepository;
 import java.util.Optional;
-import jdk.jshell.spi.ExecutionControl.UserException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,6 +62,11 @@ public class UserGetServiceImpl implements UserGetService {
                 () ->
                     new BusinessLogicException(UserExceptionCode.USER_NOT_FOUND)
             );
+    }
+
+    @Override
+    public Page<UserEntity> get(Pageable pageable) {
+        return repository.findPageAll(pageable);
     }
 
     private void validProviderJwt(UserEntity entity){
