@@ -33,6 +33,7 @@ public class UserEntity extends BaseEntity {
     private String password;
     private UserRole role;
     private String profile;
+    private String name;
     private String nickname;
     private String phone;
     private UserState state;

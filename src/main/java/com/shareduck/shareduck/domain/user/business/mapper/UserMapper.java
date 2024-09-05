@@ -20,6 +20,7 @@ public class UserMapper {
             .email(dto.email())
             .password(dto.password())
             .nickname(UUID.randomUUID().toString())
+            .name(dto.name())
             .profile(dto.profile())
             .state(UserState.ACTIVE)
             .role(UserRole.USER)
