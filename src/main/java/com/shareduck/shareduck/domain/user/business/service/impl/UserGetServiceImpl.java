@@ -66,7 +66,7 @@ public class UserGetServiceImpl implements UserGetService {
 
     @Override
     public Page<UserEntity> get(Pageable pageable) {
-        return repository.findPageAll(pageable);
+        return repository.findAll(pageable);
     }
 
     private void validProviderJwt(UserEntity entity){
