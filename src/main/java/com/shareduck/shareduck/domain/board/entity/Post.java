@@ -1,12 +1,14 @@
 package com.shareduck.shareduck.domain.board.entity;
 
 import static jakarta.persistence.CascadeType.*;
-import static jakarta.persistence.EnumType.*;
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 import static org.hibernate.type.SqlTypes.*;
 
+import com.shareduck.shareduck.domain.board.enumerate.PostState;
+import jakarta.persistence.Enumerated;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,12 +21,10 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.shareduck.shareduck.domain.board.enumerate.PostState;
-import com.shareduck.shareduck.domain.user.entity.UserEntity;
+import com.shareduck.shareduck.domain.user.persistence.entity.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
