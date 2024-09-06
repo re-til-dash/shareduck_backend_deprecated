@@ -31,7 +31,7 @@ logging:
 jwt:
   prefix: 'Bearer '
   secret-key: ${KEY}
-  access-token-validity-in-seconds: 150
+  access-token-validity-in-seconds: 15000
   refresh-token-validity-in-seconds: 259200
   access-header: Authentication
   refresh-header: Refresh
