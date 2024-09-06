@@ -59,7 +59,7 @@ public class UserController implements UserControllerDoc {
         return facade.get(idx);
     }
 
-    @GetMapping
+    @GetMapping("/page")
     public Page<GetUserSimpleResponse> get(Pageable pageable) {
         return facade.get(pageable);
     }
