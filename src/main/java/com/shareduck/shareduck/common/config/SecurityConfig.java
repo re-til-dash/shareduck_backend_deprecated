@@ -1,5 +1,7 @@
 package com.shareduck.shareduck.common.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import java.util.Arrays;
 
 import com.shareduck.shareduck.common.security.handler.AuthenticationEntryPointHandler;
@@ -43,6 +45,9 @@ public class SecurityConfig {
                 .logout(
                         logout ->
                                 logout.logoutSuccessHandler(logoutSuccessCustomHandler).logoutUrl("/api/logout"));
+        http
+                    .oauth2Login(withDefaults());    // (2)
+
         return http.build();
     }
 

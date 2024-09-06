@@ -75,9 +75,21 @@ public class UserEntity extends BaseEntity {
 
     //TODO : Entity 설계 완성 후 추가 설계 필수
     public UserEntity update(UserEntity request) {
-        Optional.ofNullable(request.nickname).ifPresent(this::addNickname);
+        // 이메일, 비밀번호, UUID는 변경하지 않음
+        Optional.ofNullable(request.name).ifPresent(e -> this.name = e);
+        Optional.ofNullable(request.nickname).ifPresent(e -> this.nickname = e);
         Optional.ofNullable(request.profile).ifPresent(e -> this.profile = e);
         Optional.ofNullable(request.phone).ifPresent(e -> this.phone = e);
+        Optional.ofNullable(request.state).ifPresent(e -> this.state = e);
+        Optional.ofNullable(request.role).ifPresent(e -> this.role = e);
+        Optional.ofNullable(request.lastConnect).ifPresent(e -> this.lastConnect = e);
+        Optional.ofNullable(request.deleteDate).ifPresent(e -> this.deleteDate = e);
+        return this;
+    }
+
+    public UserEntity oauth(UserEntity request) {
+        update(request);
+        Optional.ofNullable(request.provider).ifPresent(e -> this.provider = e);
         return this;
     }
 }
