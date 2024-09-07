@@ -74,6 +74,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private Principal createUserDetails(HttpServletRequest request) {
         String token =
                 getAuthenticationTokenToHeader(request).substring(jwtProperties.getPrefixLength());
-        return new Principal(jwtProvider.getClaims(token));
+        return Principal.token(jwtProvider.getClaims(token));
     }
 }
