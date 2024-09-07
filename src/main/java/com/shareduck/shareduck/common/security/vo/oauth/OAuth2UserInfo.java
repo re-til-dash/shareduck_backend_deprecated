@@ -23,6 +23,7 @@ public abstract class OAuth2UserInfo {
 
     public abstract String getName();
 
+    //TODO : PASSWORD 변경 필수
     public UserEntity toEntity() {
         return UserEntity.builder()
             .email(getEmail())
@@ -31,6 +32,7 @@ public abstract class OAuth2UserInfo {
             .idx(UUID.randomUUID().toString())
             .provider(getProvider())
             .profile(getProfile())
+            .password(UUID.randomUUID().toString())
             .build();
     }
     public String getNameAttributeKey() {

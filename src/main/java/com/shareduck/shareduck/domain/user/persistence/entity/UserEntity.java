@@ -90,6 +90,7 @@ public class UserEntity extends BaseEntity {
     public UserEntity oauth(UserEntity request) {
         update(request);
         Optional.ofNullable(request.provider).ifPresent(e -> this.provider = e);
+        Optional.ofNullable(request.email).ifPresent(e -> this.email = e);
         return this;
     }
 }
