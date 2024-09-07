@@ -1,7 +1,5 @@
 package com.shareduck.shareduck.common.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import java.util.Arrays;
 
 import com.shareduck.shareduck.common.security.handler.AuthenticationEntryPointHandler;
@@ -9,6 +7,7 @@ import com.shareduck.shareduck.common.security.handler.LogoutSuccessCustomHandle
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -45,8 +44,7 @@ public class SecurityConfig {
                 .logout(
                         logout ->
                                 logout.logoutSuccessHandler(logoutSuccessCustomHandler).logoutUrl("/api/logout"));
-        http
-                    .oauth2Login(withDefaults());    // (2)
+        http.oauth2Login(Customizer.withDefaults());
 
         return http.build();
     }
