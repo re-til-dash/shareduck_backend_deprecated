@@ -31,12 +31,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.with(jwtFilterDsl, JwtFilterDsl::build);
         http.headers(headerConfig -> headerConfig.frameOptions(FrameOptionsConfig::disable));
-        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+        http.authorizeHttpRequests(authorize ->
+                authorize
+                    .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
+                    .requestMatchers("/error/**").permitAll()
+                    .requestMatchers("/api/auth/reissue").permitAll()
+                    .anyRequest().authenticated())
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                // cors 관련 옵션 끄기
                 .cors(cors -> cors.configurationSource(apiConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(

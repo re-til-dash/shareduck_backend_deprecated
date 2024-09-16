@@ -65,13 +65,24 @@ cookie:
   domain: localhost
 
 
-
+springdoc:
+  version: 1.0.0
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+    disable-swagger-default-url: true
+    display-request-duration: true
+    tags-sorter: alpha
+    operations-sorter: alpha
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
 
 
 aws:
   s3:
     bucket:
-      name: ${SHAREDUCK_S3_BUCKET}
-    postImage.root: ${SHAREDUCK_POSTIMAGE_ROOT_PATH}
+      name: shareduck-tmp-v1
+    postImage.root: post
   cloudfront:
-    host: ${SHAREDUCK_CLOUDFRONT_HOST}
+    host: tmpduck-cf.jiheon.info
