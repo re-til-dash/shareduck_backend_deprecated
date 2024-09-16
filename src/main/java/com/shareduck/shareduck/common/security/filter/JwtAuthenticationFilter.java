@@ -55,7 +55,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 refreshToken,
                 objectMapper.toStringValue(createUserInfo(principal)),
                 jwtProperties.getRefreshTokenValidityInSeconds());
+
         response.setHeader(HttpHeaders.AUTHORIZATION, jwtProperties.getPrefix() + accessToken);
+        response.setHeader("Refresh", refreshToken);
         response.addCookie(cookieUtils.createCookie(refreshToken));
     }
 
