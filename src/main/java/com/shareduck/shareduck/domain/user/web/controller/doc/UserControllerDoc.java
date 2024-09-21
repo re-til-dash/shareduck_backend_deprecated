@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "User", description = "User Domain API")
 public interface UserControllerDoc {
 
-    @Operation(summary = "회원 가입 (ALL)", description = "")
+    @Operation(summary = "회원 가입 [ALL]", description = "")
     @ApiResponses(
         value = {
             @ApiResponse(responseCode = "201")
@@ -31,7 +31,7 @@ public interface UserControllerDoc {
     )
     UserIdResponse post(PostUserRequest dto);
 
-    @Operation(summary = "사용자 삭제 (USER)", description = "")
+    @Operation(summary = "사용자 삭제 [USER]", description = "")
     @ApiResponses(
         value = {
             @ApiResponse(responseCode = "204")
@@ -39,11 +39,11 @@ public interface UserControllerDoc {
     )
     void delete(@Parameter(hidden = true) CurrentUser user);
 
-    @Operation(summary = "사용자 수정 (USER)", description = "")
+    @Operation(summary = "사용자 수정 [USER]", description = "")
     UserIdResponse patch(@RequestBody PatchUserRequest dto,
         @Parameter(hidden = true) CurrentUser user);
 
-    @Operation(summary = "비밀번호 변경 (USER)", description = "")
+    @Operation(summary = "비밀번호 변경 [USER]", description = "")
     @ApiResponses(
         value = {
             @ApiResponse(responseCode = "204")
@@ -53,10 +53,10 @@ public interface UserControllerDoc {
         @Parameter(hidden = true) CurrentUser user);
 
 
-    @Operation(summary = "회원 정보 조회 (USER)", description = "")
+    @Operation(summary = "로그인 후 회원 정보 조회 [USER]", description = "")
     GetUserResponse get(@Parameter(hidden = true) CurrentUser user);
 
-    @Operation(summary = "회원 정보 조회 (ALL)", description = "")
+    @Operation(summary = "회원 정보 조회 [ALL]", description = "")
     @Parameters(
         value = {
             @Parameter(name = "idx" ,description = "사용자 고유 ID", in = ParameterIn.PATH)
@@ -64,10 +64,10 @@ public interface UserControllerDoc {
     )
     GetUserResponse get(@PathVariable("idx") String idx);
 
-    @Operation(summary = "회원 리스트 조회 (ALL)", description = "")
+    @Operation(summary = "회원 리스트 조회 [ALL]", description = "")
     @Parameters(
         value = {
-            @Parameter(name = "page" ,description = "몇 번째 페이지 정보인가,0부터 시작", in = ParameterIn.QUERY),
+            @Parameter(name = "page" ,description = "몇 번째 페이지 정보인가 <br> 0부터 시작", in = ParameterIn.QUERY),
             @Parameter(name = "size" ,description = "한 페이지에 전달되는 데이터 수", in = ParameterIn.QUERY),
             @Parameter(name = "sort" ,description = "정렬 방법", in = ParameterIn.QUERY)
         }

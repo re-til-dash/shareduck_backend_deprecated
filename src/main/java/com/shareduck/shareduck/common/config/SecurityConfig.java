@@ -5,11 +5,13 @@ import java.util.Arrays;
 import com.shareduck.shareduck.common.security.handler.AuthenticationEntryPointHandler;
 import com.shareduck.shareduck.common.security.handler.LogoutSuccessCustomHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,15 +30,25 @@ public class SecurityConfig {
     private final JwtFilterDsl jwtFilterDsl;
 
     @Bean
+    public WebSecurityCustomizer configureH2ConsoleEnable() {
+        return web -> web.ignoring()
+            .requestMatchers(PathRequest.toH2Console());
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.with(jwtFilterDsl, JwtFilterDsl::build);
         http.headers(headerConfig -> headerConfig.frameOptions(FrameOptionsConfig::disable));
-        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+        http.authorizeHttpRequests(authorize ->
+                authorize
+                    .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
+                    .requestMatchers("/error/**").permitAll()
+                    .requestMatchers("/api/auth/reissue").permitAll()
+                    .anyRequest().authenticated())
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                // cors 관련 옵션 끄기
                 .cors(cors -> cors.configurationSource(apiConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(

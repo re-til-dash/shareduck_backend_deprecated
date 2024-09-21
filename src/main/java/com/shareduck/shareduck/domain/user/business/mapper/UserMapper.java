@@ -9,9 +9,7 @@ import com.shareduck.shareduck.domain.user.web.dto.request.PostUserRequest;
 import com.shareduck.shareduck.domain.user.web.dto.response.GetUserResponse;
 import com.shareduck.shareduck.domain.user.web.dto.response.GetUserSimpleResponse;
 import com.shareduck.shareduck.domain.user.web.dto.response.UserIdResponse;
-import com.sun.source.tree.GuardedPatternTree;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -50,7 +48,7 @@ public class UserMapper {
 
     public GetUserResponse toGetDto(UserEntity entity) {
         return GetUserResponse.builder()
-            .userId(entity.getId())
+            .id(entity.getId())
             .email(entity.getEmail())
             .nickname(entity.getNickname())
             .profile(entity.getProfile())
