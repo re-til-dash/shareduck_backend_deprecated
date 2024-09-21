@@ -1,6 +1,7 @@
 package com.shareduck.shareduck.common.security.controller;
 
 import com.shareduck.shareduck.common.security.service.AuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "AUTH",description = "Security 관련 API")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService service;
