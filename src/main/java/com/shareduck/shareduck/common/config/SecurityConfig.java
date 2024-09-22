@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.shareduck.shareduck.common.security.handler.AuthenticationEntryPointHandler;
 import com.shareduck.shareduck.common.security.handler.LogoutSuccessCustomHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,7 @@ public class SecurityConfig {
     private final JwtFilterDsl jwtFilterDsl;
 
     @Bean
+    @ConditionalOnProperty(name = "spring.h2.console.enabled")
     public WebSecurityCustomizer configureH2ConsoleEnable() {
         return web -> web.ignoring()
             .requestMatchers(PathRequest.toH2Console());

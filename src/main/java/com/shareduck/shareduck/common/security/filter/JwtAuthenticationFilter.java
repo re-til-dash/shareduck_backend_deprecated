@@ -75,7 +75,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     private UsernamePasswordAuthenticationToken createAuthenticationToken(LoginDto login) {
-        return new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
+        return new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword());
     }
 
     private String toTrans(Collection<? extends GrantedAuthority> list) {
