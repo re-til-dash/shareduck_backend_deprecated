@@ -15,16 +15,16 @@ spring:
     database: mysql
   data:
     redis:
-      host: 127.0.0.1   #${REDIS_URL}
+      host: ${REDIS_URL}
       port: 6379
 
 
 
 logging:
   level:
-    org.hibernate.sql: warn
-    org.hibernate.type.descriptor.sql: warn
-    root: warn
+    org.hibernate.sql: error
+    org.hibernate.type.descriptor.sql: error
+    root: error
 
 
 
@@ -49,10 +49,10 @@ cookie:
 aws:
   s3:
     bucket:
-      name: ${SHAREDUCK_S3_BUCKET}
-    postImage.root: ${SHAREDUCK_POSTIMAGE_ROOT_PATH}
+      name: ${S3_BUCKET}
+    postImage.root: ${POSTIMAGE_ROOT_PATH}
   cloudfront:
-    host: ${SHAREDUCK_CLOUDFRONT_HOST}
+    host: ${CLOUDFRONT_HOST}
 
 
 
@@ -61,7 +61,7 @@ aws:
 server:
   port: 8080
   ssl:
-    key-store: ${SHAREDUCK_KEY_STORE}
-    key-store-password: ${SHAREDUCK_KEY_STORE_PASSWORD}
+    key-store: ${KEY_STORE}
+    key-store-password: ${KEY_STORE_PASSWORD}
     key-store-type: PKCS12
     key-alias: tomcat
