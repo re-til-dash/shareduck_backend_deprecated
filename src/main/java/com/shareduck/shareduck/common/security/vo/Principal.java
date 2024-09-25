@@ -43,7 +43,9 @@ public class Principal extends DefaultOAuth2User implements UserDetails {
     }
 
     public static Principal token(Claims claims) {
-        return new Principal(claims, null, null);
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("JWT", claims.getSubject());
+        return new Principal(claims, attributes, "JWT");
     }
 
     public static Principal oauth(UserEntity user, Map<String, Object> attributes,
