@@ -44,7 +44,10 @@ jobs:
           scp -i ec2_key.pem -o StrictHostKeyChecking=no ./build/libs/shareduck.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/
 
         # EC2 인스턴스에서 JAR 실행
-        # - name: Deploy and Run JAR on EC2
-        #   run: |
-        #     ssh -i ec2_key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "nohup java -jar /home/${{ secrets.EC2_USERNAME }}/shareduck.jar -Dspring.profiles.active=dev &"
+      - name: Deploy and Run JAR on EC2
+        run: |
+          ssh -i ec2_key.pem  -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} " /home/${{ secrets.EC2_USERNAME }}/start_server.sh"
+
+      - name: Clean up SSH key
+        run: rm ec2_key.pem
 
