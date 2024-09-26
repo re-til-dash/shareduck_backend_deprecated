@@ -21,37 +21,27 @@
 
 }
 
+
 body {
-    margin: auto;
-    max-width: 1378px;
     position: relative;
     overflow-x: hidden;
 }
 
 body::before {
-    content: "";
+    content: url(./img/shareduck_landing_background_up.png);
     position: absolute;
-    width: 2231px;
-    height: 2231px;
-    border-radius: 2231px;
-    background: linear-gradient(180deg, #FC71FF 0%, #FAEFFE 100%);
-    filter: blur(400px);
-    top: calc(-2231px / 2 - 500px);
-    left: calc(-2231px / 2);
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: -99;
 }
 
 body::after {
-    content: "";
+    content: url(./img/shareduck_landing_background_down.png);
     position: absolute;
-    width: 2231px;
-    height: 2231px;
-    border-radius: 1744px;
-    top: calc(2231px / 2);
-    background: linear-gradient(180deg, #E18CFF 0%, rgba(255, 221, 196, 0.50) 100%);
-    filter: blur(400px);
-    top: calc(-2231px / 2 - 500px);
-    right: calc(-2231px / 2);
+    bottom: 0;
+    left: 0;
+    right: 0;
     z-index: -99;
 }
 
@@ -60,14 +50,23 @@ main,
 footer,
 section {
     width: 100%;
+    max-width: 1378px;
     display: flex;
     flex-direction: column;
     margin: auto;
 }
 
+header.header {
+    padding: 26px 0;
+}
+
 section {
     margin-top: 40px;
     margin-bottom: 100px;
+}
+
+a:hover {
+    color: var(--color-wb-000)
 }
 
 .flex {
@@ -86,18 +85,23 @@ button {
 }
 
 button#download {
-    padding: 32px 54px;
+    display: flex;
+    align-items: center;
+    gap: var(--round, 8px);
+
+    padding: 8px 24px;
     border-radius: 99px;
     border: 1px solid var(--color-vio-300);
     background: #FFF;
     color: #000;
 
-    /* typo/typo-head-36 */
-    font-size: 36px;
+    font-family: SUIT;
+    font-size: 20px;
+    font-style: normal;
     font-weight: 400;
-    line-height: 48px;
-    /* 133.333% */
-    letter-spacing: -0.72px;
+    line-height: 30px;
+    /* 150% */
+    letter-spacing: -0.4px;
 }
 
 button#download::before {
@@ -106,20 +110,21 @@ button#download::before {
 }
 
 button#discord {
-    margin-top: 281px;
+    margin-top: 72px;
     border-radius: 99px;
-    border: 1px solid #CEA9DB;
+    border: none;
     background: #5865F2;
-    padding: 32px 54px;
+    padding: 14px 24px 10px 24px;
 
-    color: var(--color-wb-000);
-
-    /* typo/typo-head-36 */
-    font-size: 36px;
-    font-weight: 400;
-    line-height: 48px;
+    color: var(--color-wb-000, #FFF);
+    /* typo/typo-body-18-bold */
+    font-family: SUIT;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
     /* 133.333% */
-    letter-spacing: -0.72px;
+    letter-spacing: -0.27px;
 }
 
 button#discord::before {
@@ -137,55 +142,109 @@ img {
     object-position: center;
 }
 
+img.logo {
+    margin-right: 8px;
+}
+
 .block {
     display: block;
 }
 
+
 h1 {
-    font-size: 74px;
+    color: var(--color-wb-000, #FFF);
+    font-family: SUIT;
+    font-size: 36px;
     font-style: normal;
-    font-weight: 900;
-    line-height: 74px;
-    /* 100% */
-    letter-spacing: -1.628px;
+    font-weight: 700;
+    line-height: 48px;
+    /* 133.333% */
+    letter-spacing: -0.72px;
 }
 
 h3 {
+
+    align-self: stretch;
     color: var(--color-vio-900, #280036);
-    font-size: 40px;
+    text-align: center;
+    /* typo/typo-head-36-bold */
+    font-family: SUIT;
+    font-size: 36px;
+    font-style: normal;
     font-weight: 700;
-    line-height: 140%;
-    /* 56px */
-    letter-spacing: -0.88px;
+    line-height: 48px;
+    /* 133.333% */
+    letter-spacing: -0.72px;
+
+}
+
+h3.small {
+    color: var(--color-wb-600, #575458);
+    /* typo/typo-body-14 */
+    font-family: SUIT;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 171.429% */
+    letter-spacing: -0.084px;
+}
+
+h4 {
+    color: var(--color-vio-900, #280036);
+    /* typo/typo-head-24-bold */
+    font-family: SUIT;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+    /* 133.333% */
+    letter-spacing: -0.456px;
 }
 
 .title {
-    font-size: 74px;
     color: var(--color-vio-900, #280036);
+    font-family: SUIT;
+    font-size: 48px;
+    font-style: normal;
     font-weight: 900;
     line-height: 74px;
-    /* 100% */
-    letter-spacing: -1.628px;
+    /* 154.167% */
+    letter-spacing: -1.056px;
+
+    text-align: center;
 }
 
 .intro {
     color: var(--color-vio-900, #280036);
-    font-size: 40px;
+    text-align: center;
+    font-family: SUIT;
+    font-size: 20px;
+    font-style: normal;
     font-weight: 700;
     line-height: 140%;
-    /* 56px */
-    letter-spacing: -0.88px;
+    /* 28px */
+    letter-spacing: -0.44px;
     margin-bottom: 58px;
 }
 
 .chat {
     display: flex;
     margin-bottom: 32px;
-    padding: 32px;
+    padding: 12px 24px;
     border-radius: 14.38px;
     width: fit-content;
     position: relative;
     font-size: 44px;
+
+    color: var(--color-vio-900, #280036);
+    font-family: SUIT;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 57.519px;
+    /* 287.595% */
+    letter-spacing: -0.38px;
 }
 
 .chat.right {
@@ -222,27 +281,23 @@ h3 {
 }
 
 
-.blurImg {
-    position: absolute;
-    right: -138px;
-    opacity: 0.3;
-    filter: blur(25px);
+.section1>div.image {
+    background: url(./img/mainImg.png) 50%/contain no-repeat;
+    background-position: center;
+    height: 600px;
+    margin-top: 40px;
 }
 
-.section1>div.wrap {
-    margin-bottom: 65px;
-}
-
-.section1>div.wrap> :first-child {
+.section1>div.flex {
     margin: auto;
 }
 
-.section1>div.wrap>div.image {
-    flex-basis: 70%;
-    flex-shrink: 0;
-    background-image: url(./img/MacBookAir.png);
-    background-position: center;
-    height: 600px;
+.section1>div.flex>* {
+    margin: auto;
+}
+
+.section1>div.flex>:first-child {
+    margin-right: 20px;
 }
 
 .section2 {
@@ -276,48 +331,97 @@ h3 {
 }
 
 .section3 p {
-    color: var(--color-wb-600, #575458);
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 140%;
-    /* 22.4px */
-    letter-spacing: -0.352px;
+
     margin: 32px 0;
 }
 
 .section3 p.bold {
+    color: var(--color-vio-900, #280036);
+    text-align: center;
+
+    /* typo/typo-head-24 */
+    font-family: SUIT;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px;
+    /* 133.333% */
+    letter-spacing: -0.456px;
+
+    margin-top: 23px;
+}
+
+.section3>div.wrap>div.card>p.bold {
     color: var(--color-vio-700, #4A0A60);
-    font-size: 32px;
+    /* typo/typo-body-18-bold */
+    font-family: SUIT;
+    font-size: 18px;
     font-style: normal;
     font-weight: 700;
-    line-height: 140%;
-    /* 44.8px */
-    letter-spacing: -0.704px;
+    line-height: 24px;
+    /* 133.333% */
+    letter-spacing: -0.27px;
+
+    text-align: left;
+}
+
+.section3 p.step {
+    color: var(--color-wb-600, #575458);
+    /* typo/typo-body-14 */
+    font-family: SUIT;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 171.429% */
+    letter-spacing: -0.084px;
+    margin-bottom: 8px;
 }
 
 .section3 p.para {
     color: var(--color-vio-600, #5A1771);
-    font-size: 24px;
+    /* typo/typo-body-18 */
+    font-family: SUIT;
+    font-size: 18px;
     font-style: normal;
     font-weight: 400;
-    line-height: 140%;
-    /* 33.6px */
-    letter-spacing: -0.528px;
+    line-height: 24px;
+    /* 133.333% */
+    letter-spacing: -0.27px;
 
 }
+
+
 
 .section4 {
     text-align: center;
 }
 
+.section4 p {
+    color: var(--color-vio-900, #280036);
+    text-align: center;
+
+    /* typo/typo-head-36 */
+    font-family: SUIT;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 48px;
+    /* 133.333% */
+    letter-spacing: -0.72px;
+}
+
 .section4 p.strong {
     color: var(--color-vio-900, #280036);
     text-align: center;
-    font-size: 64px;
+
+    /* typo/typo-head-48-bold */
+    font-family: SUIT;
+    font-size: 48px;
     font-style: normal;
     font-weight: 700;
-    line-height: 140%;
-    /* 89.6px */
-    letter-spacing: -1.408px;
+    line-height: 64px;
+    /* 133.333% */
+    letter-spacing: -1.056px;
     margin: 23px 0;
 }
