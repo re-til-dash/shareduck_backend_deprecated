@@ -46,7 +46,7 @@ jobs:
           chmod 400 ec2_key.pem
           scp -i ec2_key.pem -o StrictHostKeyChecking=no ./build/libs/shareduck.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/
 
-        # EC2 인스턴스에서 JAR 실행
+        # EC2 인스턴스에서 JAR 실행 (서버종료대기시간10여초임)
       - name: Deploy and Run JAR on EC2
         run: |
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no  ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "\
