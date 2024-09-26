@@ -49,7 +49,7 @@ jobs:
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "\
             cd /home/${{ secrets.EC2_USERNAME }} && \
             bash stop_server.sh && \
-            nohup bash start_server.sh > /dev/null 2>&1 & disown"
+            nohup java -jar -Dspring.profiles.active=dev shareduck.jar > /dev/null 2>&1 & 
 
       - name: Clean up SSH key
         run: rm ec2_key.pem
