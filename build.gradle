@@ -85,11 +85,3 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
-bootJar {
-    archiveFileName = "${rootProject.name}.jar"
-}
-
-jar {
-    enabled = false
-}
