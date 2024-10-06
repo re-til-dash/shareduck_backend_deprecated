@@ -38,11 +38,23 @@ public class AuthService {
         saveUserInfoToRedis(refresh, findUserInfoData(request));
 
         response.setHeader(HttpHeaders.AUTHORIZATION, access);
+        response.setHeader(properties.getRefreshHeader(), refresh);
         response.addCookie(cookieUtils.createCookie(refresh));
     }
 
+
+    //get Refresh Token
     private UserInfo findUserInfoData(HttpServletRequest request) {
-        return findUserInfo(cookieUtils.searchCookieProperties(request));
+        String refresh = getRefreshFromRequest(request);
+
+        return findUserInfo(refresh);
+    }
+
+    private String getRefreshFromRequest(HttpServletRequest request){
+        if(request.getHeader(properties.getRefreshHeader()) != null){
+            return request.getHeader(properties.getRefreshHeader());
+        }else
+            return findTokenToRedis(cookieUtils.searchCookieProperties(request));
     }
 
     private String getRefreshToken(UserEntity findUser) {
@@ -68,14 +80,13 @@ public class AuthService {
                 .orElseThrow(() -> new BusinessLogicException(AuthExceptionCode.USER_NOT_FOUND));
     }
 
-    private UserInfo findUserInfo(Cookie refreshCookie) {
-        return objectMapperUtils.toEntity(findAndDeleteToRedis(refreshCookie), UserInfo.class);
+    private UserInfo findUserInfo(String refresh) {
+        return objectMapperUtils.toEntity(findAndDeleteToRedis(refresh), UserInfo.class);
     }
 
-    private String findAndDeleteToRedis(Cookie refreshCookie) {
-        String tokenToRedis = findTokenToRedis(refreshCookie);
-        deleteToken(tokenToRedis);
-        return tokenToRedis;
+    private String findAndDeleteToRedis(String refresh) {
+        deleteToken(refresh);
+        return refresh;
     }
 
     private void deleteToken(String tokenToRedis) {
