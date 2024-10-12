@@ -1,1 +1,1 @@
-프로젝트
+This project is deprecated and no longer maintained
